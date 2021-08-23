@@ -1,10 +1,13 @@
 {
-  "name": "example",
+  "name": "elyra-ai-site",
+  "homepage": "https://quarryboy.github.io/elyra-ai-site/",
   "private": true,
   "version": "1.28.0",
   "license": "Apache 2.0",
   "scripts": {
     "dev": "gatsby develop -H 0.0.0.0",
+    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build",
     "dev:clean": "gatsby clean && gatsby develop -H 0.0.0.0",
     "build": "gatsby build",
     "build:clean": "yarn clean && gatsby build",
