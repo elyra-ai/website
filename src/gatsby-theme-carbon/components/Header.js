@@ -25,7 +25,7 @@ import { useRef, useEffect } from 'react';
 import elyraConfig from '../../../cdai-config.json';
 
 const Title = () => <>Elyra</>;
-const titleUrl = '/';
+const titleUrl = 'https://quarryboy.github.io/elyra-ai-site/';
 
 const redirect = param => e => {
   if (window) {
