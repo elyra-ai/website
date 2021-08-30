@@ -1,0 +1,233 @@
+---
+title: Canvas components
+description: Canvas components
+---
+
+<PageDescription>
+
+The Elyra test harness (http://ibm.biz/elyra-canvas) allows consumers to explore a number of configurations of both the canvas as well as properties.
+
+</PageDescription>
+
+
+<InlineNotification>
+
+**Note:** You must be on an IBM network to access the test harness.
+
+</InlineNotification>
+
+
+
+
+Common canvas displays a flow of data operations as nodes and links which the user can create and edit to get the flow they want. These visual flows of data operations are translated into data processing steps performed by a back-end server. 
+
+
+<AnchorLinks >
+  <AnchorLink>Architecture</AnchorLink>
+  <AnchorLink>First steps</AnchorLink>
+
+</AnchorLinks>
+
+
+To use the Flow Validation API import the `FlowValidation` object from common-canvas:
+
+1. Create a new node by dragging a node definition from a palette onto the canvas.
+2. Create a new node by dragging a node from outside the canvas onto the canvas (you'll have to do some programming to get this to work).
+3. Delete a node by clicking a context menu option.
+4. Create a link by dragging a line from one node to another.
+5. Delete a link by clicking a context menu option.
+6. Add a comment to the canvas and draw a link from it to one or more nodes.
+7. Edit a comment.
+8. Move nodes and comments around in the canvas to get the desired arrangement.
+
+
+You can look at the App.js file in the test harness section of this repo to see examples of code that uses the common canvas component.
+
+## Architecture
+
+The rest of this document concentrates on use of the Internal Object Model.
+
+Common Canvas functionality is packaged into:
+
+1. a react component called CommonCanvas that handles:
+    - the visual display of the flow of operations;
+    - any user gestures on the canvas;
+    - display of context menus;
+    - display and handling of the palette.
+    - provision of callbacks to tell your code what operations the user is performing on the canvas
+
+<br />
+
+2. A regular JavaScript object called <a href="canvas-controller/canvas-controller-api">CanvasController</a>. The CanvasController routes calls from the host application and calls made due to user interactions into the system. In particular it updates the internal ObjectModel which stores:
+    - the data that describes the flow of nodes, links and comments (called a pipelineFlow);
+    - the data that describes the definition of the palette which contains new nodes that can be added to the canvas;
+    - the set of currently selected objects.
+    - notification messages
+    - breadcrumbs that indicate which sub-flow is being viewed
+    - layout information
+
+<br />
+
+The CanvasController provides an API which allows your code to:
+* set a new pipelineFlow;
+* get the current pipelineFlow (after the user has edited it);
+* update and edit objects in the canvas (for example, add node, delete link etc.);
+* set the node definition data (for display of nodes in the palette)
+
+
+## First steps
+
+### Hello Canvas!
+
+You can start by looking at these two 'hello world' examples for using common canvas:
+
+* This first one called <a href="https://github.com/elyra-ai/canvas/blob/master/canvas_modules/harness/src/client/App_tiny.js">App_tiny.js</a> has the bare minimum necessary to get a fully functioning common-canvas to appear including all the basic functionality, a palette and a flow of nodes and links.
+*  The second, called <a href="https://github.com/elyra-ai/canvas/blob/master/canvas_modules/harness/src/client/App_small.js">App_small.js</a>, shows many of the options available to a common-canvas developer such as configurations and callback handlers.
+
+Now let's walk through the different parts of these files:
+
+### Step 1: Import
+
+To use common canvas in your react application you need to do the following. First import the CommonCanvas react component and CanvasController class from the common-canvas library. There are two import options. If you plan to use common properties along with the canvas functionality then use this import option:
+
+<br />
+
+#### All Components
+
+```import { CommonCanvas, CanvasController } from "@elyra/canvas";```
+
+<br />
+
+#### Canvas only
+
+
+If you want to use just the canvas functionality and not common-properties you can use this import option:
+
+```import { CommonCanvas, CanvasController } from "@elyra/canvas/dist/lib/canvas";```
+
+In addition you'll need to import ```<IntlProvider>``` from the react-intl library.
+
+```import { IntlProvider } from "react-intl";```
+
+<br />
+
+### Step 2 : Create an instance of the canvas controller
+
+To control the canvas you'll need an instance of the canvas controller so create an instance of it like this (probably in the constructor of your object).
+
+```this.canvasController = new CanvasController();```
+<br />
+
+### Step 3 : Set the model and palette data
+
+Next you'll need to populate the model data by calling CanvasController with:
+
+```this.canvasController.setPipelineFlowPalette(pipelineFlowPalette);```
+```this.canvasController.setPipelineFlow(pipelineFlow);```
+
+The pipelineFlowPalette object should conform to the JSON schema found here: https://github.com/elyra-ai/pipeline-schemas/tree/master/common-canvas/palette
+
+The pipelineFlow object should conform to the JSON schema found here: https://github.com/elyra-ai/pipeline-schemas/tree/master/common-pipeline/pipeline-flow
+
+<br /> 
+
+### Step 4 : Pull in the CSS
+
+Check <a href="/common-properties/styling">this section</a> to find info on what CSS to include in your application's CSS. 
+
+<br />
+
+### Step 5 : Display the canvas
+
+
+Finally you'll need to display the canvas object inside an `<IntlProvider>` object. Inside your render code, add the following:
+
+```
+    <div>
+        <IntlProvider>
+            <CommonCanvas canvasController={this.canvasController} />
+        </IntlProvider>
+    </div>
+```
+
+The div should have the dimensions you want for your canvas to display in your page. For the canvasController property, pass the instance of canvas controller you created earlier. This is the only mandatory property. After providing this and running your code you will have a fully functioning canvas including default toolbar, context menus direct manipulation (move and resize) etc. To customize these behaviors and presentation continue with the sections below.
+
+#### Common Canvas customization
+
+If you want to customize the behavior of common canvas you can specify any combination of the following settings:
+
+```
+    <div>
+        <CommonCanvas
+            canvasController={this.canvasController}
+            config={this.commonCanvasConfig}
+            toolbarConfig={this.toolbarConfig}
+            notificationConfig={this.notificationConfig}
+            contextMenuConfig={this.contextMenuConfig}
+            keyboardConfig={this.keyboardConfig}
+            contextMenuHandler={this.contextMenuHandler}
+            beforeEditActionHandler={this.beforeEditActionHandler}
+            editActionHandler={this.editActionHandler}    
+            clickActionHandler={this.clickActionHandler}   
+            decorationActionHandler={this.decorationActionHandler}
+            layoutHandler={this.layoutHandler}  
+            tipHandler={this.tipHandler}
+            idGeneratorHandler={this.idGeneratorHandler}
+            selectionChangeHandler={this.selectionChangeHandler}
+            showRightFlyout={showRightFlyout}
+            rightFlyoutContent={rightFlyoutContent}
+        >
+        </CommonCanvas>
+    </div>
+```
+
+<br />
+
+#### Config objects
+
+Common canvas has five optional configuration objects: config, toolbarConfig, notificationConfig, contextMenuConfig and keyboardConfig. They are documented <a href="config/canvas-config">here</a>.
+
+#### Handlers
+
+There are several optional handlers implemented as callback functions. They are contextMenuHandler, editActionHandler, beforeEditActionHandler, clickActionHandler, decorationActionHandler, layoutHandler, tipHandler, idGeneratorHandler and selectionChangeHandler. They are documented <a href="callbacks">here</a>.
+
+#### Right-flyout panel parameters
+
+There are two optional parameters to let you manage the right flyout panel which can be used to display properties for objects etc. These are:
+
+* showRightFlyout: This can be true or false to indicate whether the flyout panel is shown or not. The default is false.
+* rightFlyoutContent: content to display in the right flyout which is a JSX object. Nothing is displayed by default.
+
+<br />
+
+#### Localization
+
+You can customize `<CommonCanvas>` using the `<IntlProvider>` object to display translated test
+Creating nodes on the canvas
+
+Nodes can be created on the canvas by the user in two ways:
+
+* By dragging a node from the palette onto the canvas background
+* By dragging a node from outside the canvas
+
+The first technique is provided by Common canvas. The second requires some development work which is documented <a href="enabling-external-node-creation">here</a>. 
+
+<br />
+
+### Keyboard support
+
+Common canvas supports a number of keyboard interactions as follows:
+
+| Key |                    Action |
+| ---                    | ------ |
+| Ctrl/Cmd + A          | Select All objects   |
+| Delete                  | Delete selected objects |
+| Ctrl/Cmd + Z           | Undo last command |
+| Ctrl/Cmd + Shift + Z   | Redo last undone command |
+| Ctrl/Cmd + Y           | Redo last undone command |
+| Ctrl/Cmd + X          | Cut selected objects to the clipboard |
+| Ctrl/Cmd + C          | Copy selected objects to the clipboard |
+| Ctrl/Cmd + V           | Paste objects from the clipboard |
+
+
+Your application can disable any or all of these actions by providing the <a href="/common-canvas/config/keyboard-config">keyboard config object</a> to the CommonCanvas react component.

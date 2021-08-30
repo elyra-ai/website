@@ -1,0 +1,141 @@
+---
+title: Decorator spec
+description: Decorator spec
+tabs: ['Canvas controller API', 'Style spec', 'Decorator spec', 'API Object structure', 'Notification spec']
+
+---
+
+<PageDescription>
+
+
+
+Your application can add Decorations -- additional icons, text labels or shapes -- to nodes or links in the canvas to indicate special status or attributes of the node or link. Decorations can be static (for display only) or interactive (a hotspot) so the user can click them to initiate some action.
+</PageDescription>
+
+
+
+<AnchorLinks >
+
+  <AnchorLink>Adding decorations</AnchorLink>
+  <AnchorLink>Specification</AnchorLink>
+  <AnchorLink>Notes</AnchorLink>
+
+</AnchorLinks>
+
+## Adding decorations
+
+Decorations can be added to the nodes and/or links in three different ways:
+
+1. By using the following `CanvasController` methods:
+
+```   
+setNodeDecorations(nodeId, newDecorations, pipelineId)
+setNodesMultiDecorations(pipelineNodeDecorations)
+setLinkDecorations(linkId, newDecorations, pipelineId)
+setLinksMultiDecorations(pipelineLinkDecorations)
+```
+
+and can be retrieved using these `CanvasController` methods:
+
+    ```getNodeDecorations(nodeId, pipelineId)
+    getLinkDecorations(linkId, pipelineId)```
+
+  See the <a href="canvas-controller-api">CanvasController API documentation</a> for more details.
+
+2. Decorations can be applied to, and retrieved from, nodes or links in the pipelineFlow in the `app_data.ui_data` section for the node or link.
+
+3. Decorations can be returned in the layout information returned from the <a href="/common-canvas/callbacks#layouthandler">layoutHandler</a> CommonCanvas callback method. 
+
+
+## Specification
+
+
+
+The decoration specification used by these methods and the pipelineFlow is a JavaScript object with these possible properties:
+
+```
+     {
+       id: <decoration_id>,
+       image: <image_url>,
+       label: <string>,
+       path: <string>,
+       position: <position>,
+       distance: <number>
+       x_pos: <number>,
+       y_pos: <number>,
+       width: <number>,
+       height: <number>,
+       hotspot: <boolean>,
+       class_name: <class_name>,
+       outline: <boolean>,
+       temporary: <boolean>
+     }
+```
+
+
+
+* `id` - A unique ID for the decoration within the context of the node or link to which the decorator is attached.
+* `image` - a reference to an image to display for the decoration. If an image is specified the image is displayed within an outline rectangle unless outline is set to false. The image should be a reference to your image like: "/images/decorations/zoom-in_32.svg". Do not set label or path when this field is set.
+* `label` - a text string is displayed at the specified decoration location. Do not set image or path when this field is set.
+* `path` - an SVG shape is displayed using this string as it's SVG path. eg. "M 0 0 L 10 10 -10 10 Z" could be specified to draw a triangle. Do not set image or label when this field is set.
+* `position` - This is the anchor point to which the decoration is attached. For a node, this can be one of these 9 enumerated values:
+
+```
+   "topLeft", "topCenter", "topRight",  
+   "middleLeft", "middleCenter", "middleRight",   
+   "bottomLeft", "bottomCenter", "bottomRight".   
+```
+
+If omitted it will default to "topLeft".
+
+For a link, this can be one of these 3 enumerated values:
+
+```
+   "source"  
+   "middle"  
+   "target"  
+
+```
+
+`source `will position the decoration at the start point of the line and `target` will position it at the end point of the line. If omitted it will default to `middle`.
+
+#### distance 
+
+A number of pixels. This is only applicable when the decoration is for a link line and then, only with straight connecting lines. That is, for node to node connections when the config property `enableLinkType `is set to `"straight"`. When specified, it will move the anchor point for the decoration to a new position along the connecting line relative to the initial position specified in the decoration's `position` property. A positive number moves the decoration along the line from the starting position towards the target of the link and a negative number backwards towards the source of the link. For example, if a straight link decoration has `position` of `source` and a `distance` of `20` the decoration's anchor point will be 20 pixels along the link line from the source (start) point of the line. After the `distance` value has been applied to the anchor point of the decoration, any `x_pos` and `y_pos` adjustment will be applied to fine tune the decoration's final position.
+
+#### x_pos
+
+This is the number of pixels horizontally from the anchor point that the decoration is positioned. It can be positive or negative. If omitted it takes a default value from the <a href="/common-canvas/customizing-node-layout#default">node layout properties</a>. x_pos is not applicable if you specify an SVG path using the `path` field, because the SVG path can be used to position the shape.
+
+#### y_pos
+
+This is the number of pixels vertically from the anchor point that the decoration is positioned. It can be positive or negative. If omitted it takes a default value from the <a href="/common-canvas/customizing-node-layout#default">node layout properties</a>.. y_pos is not applicable if you specify an SVG path using the `path` field, because the SVG path can be used to position the shape.
+
+#### width
+
+This is the width for the decorator in pixels. For an image decorator, it is the width of the rectangle surrounding the image. For a label decorator it is the width allowed for display of the label text. If omitted it takes a default value from the <a href="/common-canvas/customizing-node-layout#default">node layout properties</a>. for Node decorations and from the canvas layout properties for Link properties.
+
+#### height
+
+This is the height for the decorator in pixels. For an image decorator, it is the height of the rectangle surrounding the image. For a label decorator it is the height allowed for display of the label text. If omitted it takes a default value from the <a href="/common-canvas/customizing-node-layout#default">node layout properties</a>. for Node decorations and from the canvas layout properties for Link properties.
+
+#### hotspot
+A Boolean. It defaults to false. When set to true the decoration becomes clickable and when it is clicked the <a href="/common-canvas/callbacks#decorationactionhandler">decorationCallbackHandler</a> is called with the ID of the decoration passed as a parameter.
+
+#### class_name
+An optional class that will be applied to the decoration. You can add a style rule that references that class in your CSS to style the decoration and override the default styles.
+
+#### outline
+A Boolean. It defaults to true. When a decoration is specified with an image field the image is typically displayed with a outline rectangle around it and with an offset within the rectangle to improve presentation. If `outline` is set to `false` the outline rectangle is not displayed and the image is displayed without any offset from its specified `x_pos` and `y_pos`.
+
+#### temporary
+
+A Boolean. It defaults to false. When set to true the decoration object will not be saved in the pipelineFlow document returned by the `CanvasController.getPipelineFlow()` method.
+
+## Notes
+
+1. Using `x_pos` and `y_pos`, decorations can be displayed outside the node boundary.
+2. If no image or label or path is provided, the default decoration is a rectangle displayed with the class_name provided.
+3. You can specify as many decorations as you want by providing extra entries in the decorations array.
+4. Images and labels are positioned differently. For images, the position defined for the decoration is the top left corner of the image. For labels it is anchor point for the label which is the base line of the string in the vertical direction and is dependent on the text-anchor CSS property applied to the text. So if you apply the `text-anchor: middle` CSS property to the label in the style related to class_name the label will be centered on the point calculated for the position of the decoration.
+

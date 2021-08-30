@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: "Gatsby Theme Carbon",
-    description: "A Gatsby theme for the carbon design system",
-    keywords: "gatsby,theme,carbon",
+    title: "Elyra",
+    description: "A repository of information for the Elyra AI and Canvas experiences",
+    keywords: "elyra,carbon",
   },
   plugins: [
     {
@@ -15,8 +15,10 @@ module.exports = {
         background_color: "#ffffff",
         theme_color: "#0062ff",
         display: "browser",
+        isSwitcherEnabled: "false",
       },
     },
     'gatsby-theme-carbon'
   ],
+  
 };

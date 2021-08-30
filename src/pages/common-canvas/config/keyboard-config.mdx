@@ -1,0 +1,30 @@
+---
+title: Keyboard config
+description: Keyboard config
+tabs: ['Canvas config', 'Toolbar config', 'Notification config', 'Context menu config', 'Keyboard config']
+---
+
+
+
+
+## Keyboard Config object
+
+The keyboard config object configures whether certain actions are available from the keyboard. See this section for what <a href="/common-canvas/canvas-documentation#keyboard-support">key combinations</a> are supported
+
+```
+const keyboardConfig = {
+    actions: {
+        delete: false,
+        undo: false,
+        redo: false,
+        selectAll: false,
+        cutToClipboard: false,
+        copyToClipboard: false,
+        pasteFromClipboard: false
+};
+```
+
+All actions are true by default so it is only necessary to specify those actions you don't want as `false`.
+
+
+

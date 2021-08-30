@@ -1,31 +1,124 @@
 import HomepageTemplate from 'gatsby-theme-carbon/src/templates/Homepage';
 export default HomepageTemplate;
 
-## MDX content starts here
+<br />
 
-<PageDescription>
+<Row className="image-card-group">
+  <Column colMd={4} colLg={4} noGutterSm>
+  
+<ImageCard 
+        title="AI"
+        aspectRatio="1:1"
+        subTitle="Elyra"
+        href="/getting-started-ai/elyra-overview"
+        titleColor="light"
+        subTitleColor="light"
+        hoverColor="light"
+        actionIcon="arrowRight">
 
-The homepage content here lives in the `src/pages/index.mdx` directory at the
-root of your project. Just like the other mdx pages, you can use all of our
-theme components here without importing them. Review the
-[MDX example source](https://github.com/carbon-design-system/gatsby-theme-carbon/blob/main/packages/example/src/pages/index.mdx).
+![AI](images/machine--learning--05.svg)
 
-</PageDescription>
+</ImageCard>
+</Column>
+<Column colMd={4} colLg={4} noGutterSm>
+<ImageCard 
+        title="Canvas"
+        aspectRatio="1:1"
+        subTitle="Elyra"
+        href="/getting-started/elyra-canvas-overview"
+        titleColor="light"
+        subTitleColor="light"
+        hoverColor="light"
+        actionIcon="arrowRight">
+
+![canvas](images/canvas.svg)
+
+</ImageCard>
+</Column>
+<Column colMd={4} colLg={4} noGutterSm>
+
+<ImageCard 
+        title="Contribute"
+        aspectRatio="1:1"
+        subTitle="Join our community?"
+        href="how-do-i-contribute"
+        titleColor="light"
+        subTitleColor="light"
+        hoverColor="light"
+        actionIcon="arrowRight">
+
+![community](images/community.svg)
+
+</ImageCard>
+</Column>
+</Row>
+
 
 <FeatureCard
-    color="dark"
-    href="/getting-started"
-    title="Getting started"
-    actionIcon="arrowRight"
-    className="homepage-feature"
-    >
+  subTitle="Elyra AI"
+  title="Installation"
+  actionIcon="arrowRight"
+  href="/getting-started-ai/installation"
+  color="dark">
 
-<ArtDirection>
-
-![blue vertical stripes](../images/blue-stripes-mobile.jpg)
-![blue vertical stripes](../images/blue-stripes-tablet.jpg)
-![blue vertical stripes](../images/blue-stripes.jpg)
-
-</ArtDirection>
+![demo image](/images/large-image01.svg)
 
 </FeatureCard>
+
+
+<FeatureCard
+  subTitle="Elyra Canvas"
+  title="Installation"
+  actionIcon="arrowRight"
+  href="/getting-started/installation"
+  color="dark">
+
+![demo image](/images/large-image02a.svg)
+
+</FeatureCard>
+
+
+<br />
+<br />
+
+<Row>
+
+<Column colMd={6} colLg={6} noGutterSm>
+  <ResourceCard
+   subTitle="Github"
+    title="Elyra AI repo"
+    aspectRatio="2:1"
+    actionIcon="launch"
+    color="dark"
+    titleColor="dark"
+    subTitleColor="dark"
+    href="https://github.com/elyra-ai">
+
+
+
+![Github icon](/images/logo--github.svg)
+
+  </ResourceCard>
+</Column>
+
+  <Column colMd={6} colLg={6} noGutterSm>
+  <ResourceCard
+    subTitle="Github"
+    title="Elyra Canvas repo"
+    aspectRatio="2:1"
+    actionIcon="launch"
+    color="dark"
+    titleColor="dark"
+    subTitleColor="dark"
+    href="https://github.com/elyra-ai/canvas">
+
+
+
+![Github icon](/images/logo--github.svg)
+
+  </ResourceCard>
+</Column>
+
+
+
+</Row>

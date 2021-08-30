@@ -1,0 +1,227 @@
+---
+title: Custom components
+description: Custom components
+---
+
+<PageDescription>
+
+Custom components allows applications to use custom code to drive different parts of the common-properties user interface. For some panels and controls it might be necessary to listen to different types of redux state changes to cause the panel/control to rerender.
+
+</PageDescription>
+
+
+<AnchorLinks >
+ <AnchorLink>Overview</AnchorLink>
+ <AnchorLink>Custom panels</AnchorLink>
+ <AnchorLink>Custom controls</AnchorLink>
+ <AnchorLink>Custom condition operators</AnchorLink>
+ 
+</AnchorLinks>
+
+
+## Overview
+
+ Here is an example of a textfield listening to 3 state changes:
+
+```
+import { connect } from "react-redux";
+
+// ... application code
+
+render() {
+  const value = this.props.value; // value passed by redux as a property
+
+  // ... rest of component render code
+
+}
+
+TextfieldControl.propTypes = {
+  // ... application props
+  state: PropTypes.string, // pass in by redux
+  value: PropTypes.string, // pass in by redux
+  messageInfo: PropTypes.object // pass in by redux
+};
+
+const mapStateToProps = (state, ownProps) => ({
+  value: ownProps.controller.getPropertyValue(ownProps.propertyId),
+  state: ownProps.controller.getControlState(ownProps.propertyId),
+  messageInfo: ownProps.controller.getErrorMessage(ownProps.propertyId)
+});
+export default connect(mapStateToProps, null)(TextfieldControl);
+
+
+```
+## Custom panels
+
+Custom panels allow applications to create their own panels and controls that can live in the same dialogs as common-property panels and controls.
+
+#### Custom panel interface
+
+```
+// Returns the 'id' for the group defined in uihints
+static id()
+
+constructor(parameters, controller, data)
+
+// Returns the content users want to display
+renderPanel()
+
+```
+
+
+* parameters - String array of parameters set under the customPanel group in uihints
+* controller - See <a href="controller">here</a> for API information.
+* data - Optional parameter. Returns values stored in `data` attribute of a group `customPanel`.
+* renderPanel() - Called on all Redux store changes:
+   * property value changes (<a href="controller#property-methods">property APIs</a>)
+   * state changes (<a href="controller#state-methods-(disableenabled-and-hiddenvisible)">state APIs</a>)
+   * schema changes (<a href="controller#datasetmetadata-methods">schema APIs</a>)
+   * row selection changes (<a href="controller#row-selection-methods">selection APIs</a>)
+   * messages changes (<a href="controller#message-methods">message APIs</a>)
+
+
+#### Custom react components
+
+<Title>Example</Title>
+
+```
+renderPanel() {
+ const controlId = this.parameters[0];
+ return (
+  <CustomCtrlToggle
+   key={controlId}
+   propertyId={name: controlId}
+   controller={this.controller}
+  />
+ );
+}
+
+```
+
+https://github.com/elyra-ai/canvas/tree/master/canvas_modules/harness/src/client/components/custom-panels
+
+
+## Custom Controls
+
+Custom controls allow applications to create their own controls that can live in the same dialogs as common-property panels and controls.
+
+#### Custom control interface
+
+```
+// Returns the 'custom_control_id' for the parameter defined in uihints
+static id()
+
+constructor(propertyId, controller, data, tableInfo)
+
+// Returns the content users want to display
+renderControl()
+
+```
+
+
+ * propertyId - See <a href="controller#common-properties-controller-api">propertyId</a> for definition.
+ * controller - See here for <a href="controller">API</a> information.
+ * data - Returns values stored in `data` attribute of a parameter in uihints.
+ * tableInfo - Set when custom control is a cell in a table.
+    * table (boolean) Set to true when in a table cell
+    * editStyle (string) Valid values are "summary" and "inline". "summary" is set when the control will display either below the table ("on_panel") or in a "subpanel". This allows the custom control to display a summary value in the cell and something else for the custom control.
+ * renderControl() - Called on all Redux store changes:
+   * property value changes (<a href="controller#property-methods">property APIs</a>)
+   * state changes (<a href="controller#state-methods-(disableenabled-and-hiddenvisible)">state APIs</a>)
+   * schema changes (<a href="controller#datasetmetadata-methods">schema APIs</a>)
+   * row selection changes (<a href="controller#row-selection-methods">selection APIs</a>)
+   * messages changes (<a href="controller#message-methods">message APIs</a>)
+
+
+
+#### Custom react components
+
+<Title>Example</Title>
+
+```
+renderControl() {
+ return (
+  <CustomCtrlToggle
+   key={controlId}
+   propertyId={this.propertyId}
+   controller={this.controller}
+  />
+ );
+}
+
+```
+
+https://github.com/elyra-ai/canvas/tree/master/canvas_modules/harness/src/client/components/custom-controls
+
+
+## Custom condition operators
+
+Custom condition operators allow users to create their own operators that can then be used for enablement, visibility, validation, and enum filtering. The condition operators should always return a `boolean` value.
+
+
+#### Custom operator interface
+
+```
+/**
+* This is the key used to determine if the operator should be ran.  Maps to the `op` defined in the
+* `condition` in uihints
+* @return string
+*/
+function op()
+
+/**
+* @param see below
+* @return boolean
+*/
+function evaluate(paramInfo, param2Info, value, controller)
+
+```
+
+
+
+* `paramInfo` (object) - `parameter_ref` set in the `condition` in uihints
+  *  `control` (object) - contains information about the control.
+  *  `value` (any) - current property value
+* `param2Info` (object) - `parameter_2_ref` set in the condition in uihints. See `paramInfo` for object info
+* `value` - `value` set in the `condition` in uihints. If no value specific this will be `undefined`
+* `controller` - See <a href="controller">here</a> for API information.
+
+
+<Title>Example 1</Title>
+
+```
+function op() {
+  return "customMax";
+}
+
+function evaluate(paramInfo, param2Info, value, controller) {
+  const supportedControls = ["numberfield"];
+  if (supportedControls.indexOf(paramInfo.control.controlType) >= 0) {
+    return paramInfo.value < value;
+  }
+  return true;
+}
+
+module.exports.op = op;
+module.exports.evaluate = evaluate;
+
+```
+
+
+<Title>Example 2</Title>
+
+```
+{
+  "evaluate": {
+    "condition": {
+      "parameter_ref": "custom_op_num",
+      "op": "customMax",
+      "value": 100
+    }
+  }
+}
+
+```
+
+https://github.com/elyra-ai/canvas/tree/master/canvas_modules/harness/src/client/custom/condition-ops 
+https://github.com/elyra-ai/canvas/tree/master/canvas_modules/common-canvas/src/common-properties/ui-conditions/condition-ops

@@ -1,0 +1,275 @@
+---
+title: Controller
+description: Controller
+---
+
+
+
+
+
+<AnchorLinks >
+ <AnchorLink>propertyId</AnchorLink>
+ <AnchorLink>Property methods</AnchorLink>
+ <AnchorLink>Message methods</AnchorLink>
+ <AnchorLink>State methods (disable/enabled & hidden/visible)</AnchorLink>
+ <AnchorLink>DatasetMetadata methods</AnchorLink>
+ <AnchorLink>Row selection methods</AnchorLink>
+<AnchorLink>Validation methods</AnchorLink>
+<AnchorLink>Control methods</AnchorLink>
+<AnchorLink>General methods</AnchorLink>
+<AnchorLink>Disable move row buttons methods</AnchorLink>
+ <AnchorLink>Custom panel and control methods</AnchorLink>
+<AnchorLink>maxLength for single-line and multi-line control methods</AnchorLink>
+
+
+ 
+</AnchorLinks>
+
+
+## propertyId
+
+```
+const propertyId = {
+  name: {parameter name defined in operator definition},
+  row: {row in table/array}, // optional when col not set
+  col: {col in table}, // optional
+  propertyId: {propertyId of the nested structure} // optional
+}
+
+```
+
+## Property methods
+
+```
+setPropertyValues(values)  
+updatePropertyValue(propertyId, value) 
+/* 
+ * options - optional object of config options where
+ *   filterHiddenDisabled (boolean): when set to true, filter out data values with a state of disabled or hidden
+ *   applyProperties (boolean): when set to true, will return data values in the format expected by the `applyPropertyChanges` callback. If unset or false, will return the internal format used by common properties.
+*/
+getPropertyValue(propertyId, options)  
+/* 
+ * options - optional object of config options where
+ *   filterHiddenDisabled (boolean): when set to true, filter out data values with a state of disabled or hidden
+ *   applyProperties (boolean): when set to true, will return data values in the format expected by the `applyPropertyChanges` callback. If unset or false, will return the internal format used by common properties.
+*/
+getPropertyValues(options)  
+
+```
+
+
+## Message methods
+
+```
+/*
+ * Returns current list of error messages
+ * @filteredPipeline (boolean) optional
+ * when filteredPipeline=true returns enabled/visible control messages and only 1 per control.
+ */
+getErrorMessages(filteredPipeline)
+getErrorMessage(propertyId)  
+setErrorMessages(messages)  
+updateErrorMessage(propertyId, message) 
+
+```
+
+
+## State methods (disable/enabled & hidden/visible)
+
+```
+getControlState(propertyId)
+getControlStates()
+setControlStates(states)  
+
+/*
+ * @propertyId - see above
+ * @state - valid values are "enabled", "disabled", "visible", "hidden"
+ */
+updateControlState(propertyId, state) 
+
+```
+
+
+
+## DatasetMetadata methods
+
+```
+getDatasetMetadata()
+
+/*
+ * @datasetMetadata - see [schema](https://github.com/elyra-ai/pipeline-schemas/blob/master/common-pipeline/datarecord-metadata/datarecord-metadata-v1-schema.json)
+ */ 
+setDatasetMetadata(datasetMetadata)
+
+```
+
+## Row selection methods
+
+```
+/*
+ * Returns table row selection indices as an array of integers.
+ * @propertyId - see above
+ */
+getSelectedRows(propertyId)
+
+/*
+ * Updates table row selections for the given table control.
+ * @propertyId - see above
+ * @selection - A zero-based array of integer selection indices
+ */
+updateSelectedRows(propertyId, selection) 
+
+/*
+ * Clears selected table rows for the given table.
+ * @propertyId - see above
+ * If the propertyId is omitted all table row selections are cleared
+ */
+clearSelectedRows(propertyId)
+
+/*
+ * Adds a row selection listener for a table or list.
+ * @propertyId - see above
+ * @listener - callback function for when a selection is made in the table or list
+ */
+addRowSelectionListener(propertyId, listener)
+
+/*
+ * Removes the row selection listener from a table or list.
+ * @propertyId - see above
+ */
+removeRowSelectionListener(propertyId)
+
+```
+
+## Validation methods
+
+```
+
+/*
+ * Runs validation conditions on all controls
+ */
+validatePropertiesValues()
+
+
+
+/*
+ * Validates a specific propertyId
+ * @propertyId - see above
+ */
+validateInput(propertyId)
+
+```
+
+
+## Control methods
+
+```
+/* 
+ * Update the enum values for a given control.  Used when enum values aren't static
+ * @propertyId - see above
+ * @valuesObj (array) [{ value: <string, number, boolean> , label: "<string>" }]
+ */
+updateControlEnumValues(propertyId, valuesObj)
+
+```
+
+
+
+
+
+## General methods
+
+```
+/*
+* Returns the current size of the RHS flyout.
+*/
+getEditorSize()
+
+
+```
+
+
+
+## Disable move row buttons methods
+
+```
+/**
+ * Disable table row move buttons for all propertyIds in given array
+ * @param propertyIds Array of propertyIds
+ *
+ */
+setDisableRowMoveButtons(propertyIds)
+/**
+* Returns array of propertyIds for which row move buttons will be disabled
+*	@return Array of propertyIds
+*/
+getDisableRowMoveButtons()
+/**
+* Check if row move buttons should be disabled for given propertyId
+* @param propertyId  The unique property identifier
+* @return boolean
+*/
+isDisableRowMoveButtons(propertyId)
+
+```
+
+
+
+## Custom panel and control methods
+
+```
+/* 
+ * Only used in custom panel to allow for custom property summary values to be displayed
+ * Displays the value set in propertiesReducer for that parameter
+ * @propertyId - see above
+ * @label (string)
+ * @inSummary (boolean)
+ */
+setControlInSummary(propertyId, label, inSummary)
+
+/* 
+ * Sets the content to be displayed in the summaryPanel for a customPanel property.
+ * The summary panel will directly display the content.
+ * @propertyId - see above
+ * @content = { value: <object> , label: "<value>" }
+ */
+updateCustPropSumPanelValue(propertyId, content)
+
+/* 
+ * Returns a standard control that can then be used in a customPanel.
+ * @propertyId - See above
+ * @paramDef - Follows the format of https://github.com/elyra-ai/pipeline-schemas/blob/master/common-canvas/parameter-defs/parameter-defs-v1-schema.json).  titleDefinition, current_parameters, conditions, dataset_metadata are ignored and are optional.   
+ * @parameter - This is the parameter from the paramDef to create the control for.  
+ */
+createControl(propertyId, paramDef, parameter)
+
+/* 
+ * Returns the translated text for a control given a resource key. 
+ * Users should be able to use the values from resources that has been uploaded as part of paramDef.
+ * @key - Resource key
+ * @value - Default value returned when no resource or key has been found.
+ */
+getResource(key, value)
+
+
+```
+
+
+## maxLength for single-line and multi-line control methods
+
+
+```
+/*
+ * Returns the maximum characters allowed for multi-line string controls
+ * Default value is 1024
+ */
+getMaxLengthForMultiLineControls()
+
+/*
+ * Returns the maximum characters allowed for single-line string controls
+ * Default value is 128
+ */
+getMaxLengthForSingleLineControls()
+
+```

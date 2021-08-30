@@ -1,80 +1,136 @@
-- title: Getting started
+- title: Home
   pages:
-    - path: /getting-started
-- title: Demo
+    - path: /
+- title: What is this?
   pages:
-    - path: /demo
-- title: Gallery
+    - path: /what-is-this
+- title: How do I contribute?
+  pages:
+    - path: /how-do-i-contribute
+- title: Who uses Elyra?
   pages:
     - path: /gallery
-- title: Contributions
+  hasDivider: true
+- title: Getting started - AI
   pages:
-    - path: /contributions
-- title: Guides
+    - path: /getting-started-ai/elyra-overview
+      title: 'Elyra AI overview'
+    - path: /getting-started-ai/installation
+      title: 'Installation'
+    - path: /getting-started-ai/starting-elyra
+      title: 'Starting Elyra'
+    - path: /getting-started-ai/tutorials-and-examples
+      title: 'Tutorials and examples'
+    - path: /getting-started-ai/getting-help
+      title: 'Getting help'
+    - path: /getting-started-ai/changelog
+      title: 'Changelog'
+- title: User guide
   pages:
-    - title: Authoring MDX
-      path: /guides/MDX
-    - title: Configuration
-      path: /guides/configuration
-    - title: Gatsby Sketch kit
-      path: /guides/sketch-kit
-    - title: Hosting
-      path: /guides/hosting
-    - title: Navigation
-      path: /guides/navigation/sidebar
-    - title: npm scripts
-      path: /guides/npm-scripts
-    - title: Shadowing
-      path: /guides/shadowing
-    - title: Styling
-      path: /guides/styling
-- title: Components
+    - path: /user-guide/command-line-interface
+      title: 'Command line interface'
+    - path: /user-guide/runtime-configuration
+      title: 'Runtime configuration'
+    - path: /user-guide/runtime-image-configuration
+      title: 'Runtime image configuration'
+    - path: /user-guide/pipelines
+      title: 'Pipelines'
+    - path: /user-guide/pipeline-components
+      title: 'Pipeline components'
+    - path: /user-guide/file-based-pipeline-nodes
+      title: 'Best practices for file-based pipeline node'
+    - path: /user-guide/enhanced-script-support
+      title: 'Enhanced script support'
+    - path: /user-guide/code-snippets
+      title: 'Code snippets'
+- title: Recipes
   pages:
-    - title: Accordion
-      path: /components/Accordion
-    - title: AnchorLinks
-      path: /components/AnchorLinks
-    - title: ArtDirection
-      path: /components/ArtDirection
-    - title: ArticleCard
-      path: /components/ArticleCard
-    - title: Aside
-      path: /components/Aside
-    - title: Caption
-      path: /components/Caption
-    - title: Code blocks
-      path: /components/code-blocks
-    - title: DoDontExample
-      path: /components/DoDontExample
-    - title: DoDontRow
-      path: /components/DoDontRow
-    - title: FeatureCard
-      path: /components/FeatureCard
-    - title: FeedbackDialog
-      path: /components/FeedbackDialog
-    - title: GifPlayer
-      path: /components/GifPlayer
-    - title: Grid
-      path: /components/Grid
-    - title: ImageCard
-      path: /components/ImageCard
-    - title: ImageGallery
-      path: /components/ImageGallery
-    - title: InlineNotification
-      path: /components/InlineNotification
-    - title: Markdown
-      path: /components/markdown
-    - title: MediumPosts
-      path: /components/MediumPosts
-    - title: MiniCard
-      path: /components/MiniCard
-    - title: PageDescription
-      path: /components/PageDescription
-    - title: ResourceCard
-      path: /components/ResourceCard
-    - title: Tabs
-      path: /components/Tabs
-    - title: Title
-      path: /components/Title
-    - title: Video
-      path: /components/Video
+    - path: /recipes/deploying-in-kubeflow
+      title: 'Deploying Elyra & JupyterHub in a Kubernetes environment'
+    - path: /recipes/deploying-locally
+      title: 'Deploying Kubeflow Pipelines Locally for Elyra'
+    - path: /recipes/deploying-open-data
+      title: 'Deploying Open Data Hub with Elyra'
+    - path: /recipes/using-with-notebook
+      title: 'Using Elyra with the Kubeflow Notebook Server'
+    - path: /recipes/create-custom-runtime
+      title: 'Creating a custom runtime container image'
+    - path: /recipes/visualizing-output
+      title: 'Visualizing output from notebooks or Python scripts'
+    - path: /recipes/configuring-apache
+      title: 'Configuring Apache Airflow on Kubernetes for use with Elyra'
+- title: Developer guide
+  pages:
+    - path: /dev-guide/development-workflow
+      title: 'Development workflow'
+    - path: /dev-guide/conventions-for-contributing
+      title: 'Conventions for contributing to Elyra Extensions'
+    - path: /dev-guide/logging
+      title: 'Logging'
+    - path: /dev-guide/metadata-services
+      title: 'Metadata services'
+    - path: /dev-guide/pipelines
+      title: 'Pipelines'
+    - path: /dev-guide/extension-trackers
+      title: 'Extension trackers'
+    - path: /dev-guide/contributing-to-frontend-tests
+      title: 'Contributing to frontend tests'
+    - path: /dev-guide/elyra-documentation
+      title: 'Elyra documentation'
+    - path: /dev-guide/elyra-release
+      title: 'Elyra release'
+- title: Release history
+  pages:
+    - path: /release-history
+  hasDivider: true
+- title: Getting started - Canvas
+  pages:
+  - path: /getting-started/elyra-canvas-overview
+    title: 'Elyra Canvas overview'
+  - path: /getting-started/installation
+    title: 'Installation'
+- title: Common Canvas
+  pages:
+    - path: /common-canvas/canvas-documentation
+      title: 'Canvas documentation'
+    - path: /common-canvas/config/canvas-config
+      title: 'Canvas config'
+    - path: /common-canvas/callbacks
+      title: 'Callbacks'
+    - path: /common-canvas/enabling-external-node-creation
+      title: 'Enabling external node creation'
+    - path: /common-canvas/canvas-controller/canvas-controller-api
+      title: 'Canvas controller API'
+    - path: /common-canvas/command-stack-api
+      title: 'Command stack API'
+    - path: /common-canvas/flow-validation-api
+      title: 'Flow validation API'
+    - path: /common-canvas/customizing-node-layout
+      title: 'Customizing node layout'
+    - path: /common-canvas/context-menu-wrapper
+      title: 'Context menu wrapper'
+    - path: /common-canvas/external-subflows-support
+      title: 'External subflows support'
+- title: Common Properties
+  pages:
+    - path: /common-properties/properties-documentation
+      title: 'Properties documentation'
+    - path: /common-properties/parameter-definition
+      title: 'Parameter definition'
+    - path: /common-properties/ui-hints
+      title: 'UI hints'
+    - path: /common-properties/controls
+      title: 'Controls'
+    - path: /common-properties/conditions
+      title: 'Conditions'
+    - path: /common-properties/custom-components
+      title: 'Custom components'
+    - path: /common-properties/controller
+      title: 'Controller'
+    - path: /common-properties/accessibility
+      title: 'Accessibility'
+    - path: /common-properties/styling
+      title: 'Styling'
+    - path: /common-properties/development-testing-guidelines
+      title: 'Development testing guidelines'
+
