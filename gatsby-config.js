@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: "/elyra-ai-site",
   siteMetadata: {
     title: "Elyra",
     description: "A repository of information for the Elyra AI and Canvas experiences",
@@ -8,9 +9,9 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        name: "Carbon Design Gatsby Theme",
+        name: "Elyra",
         icon: "src/images/favicon.svg",
-        short_name: "Gatsby Theme Carbon",
+        short_name: "Elyra",
         start_url: "/",
         background_color: "#ffffff",
         theme_color: "#0062ff",
