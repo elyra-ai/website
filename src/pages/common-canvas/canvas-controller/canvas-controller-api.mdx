@@ -2,8 +2,9 @@
 title: Canvas controller API
 description: Canvas controller API
 tabs: ['Canvas controller API', 'Style spec', 'Decorator spec', 'API Object structure', 'Notification spec']
-
 ---
+
+import { Link } from 'gatsby';
 
 <PageDescription>
 
@@ -14,38 +15,39 @@ Your application code can programmatically perform many of the actions that the 
 
 <InlineNotification>
 
-**Note:** See <a href="api-object-structure">this section</a> for differences between the structure of objects in the API and the schema.
+**Note:** See <Link to="/common-canvas/canvas-controller/api-object-structure">this section</Link> for differences between the structure of objects in the API and the schema.
+
 </InlineNotification>
 
 
 <AnchorLinks >
-
   <AnchorLink>Introduction</AnchorLink>
   <AnchorLink>Pipeline flow methods</AnchorLink>
-    <AnchorLink>Pipeline methods</AnchorLink>
+  <AnchorLink>Pipeline methods</AnchorLink>
   <AnchorLink>Palette flow methods</AnchorLink>
-    <AnchorLink>Selections methods</AnchorLink>
+  <AnchorLink>Selections methods</AnchorLink>
   <AnchorLink>Notification messages methods</AnchorLink>
-    <AnchorLink>Node AND comment methods</AnchorLink>
+  <AnchorLink>Node AND comment methods</AnchorLink>
   <AnchorLink>Node methods</AnchorLink>
-    <AnchorLink>Comment methods</AnchorLink>
+  <AnchorLink>Comment methods</AnchorLink>
   <AnchorLink>Link methods</AnchorLink>
-    <AnchorLink>Branch highlight methods</AnchorLink>
+  <AnchorLink>Branch highlight methods</AnchorLink>
   <AnchorLink>Operational methods</AnchorLink>
-
 </AnchorLinks>
 
 ## Introduction
 
 In most cases within the API, the pipelineId parameter is optional. If pipelineId is omitted, the method will default to the pipeline that is currently displayed in the main canvas viewport.
 
-Warning: Do not alter the IDs of objects that currently exist on the canvas. Changing object IDs can cause internal problems, in particular with the command stack.
+Warning 1: Do not alter the IDs of objects that currently exist on the canvas. Changing object IDs can cause internal problems, in particular with the command stack.
+
+Warning 2: When using external pipline flows, Pipeline IDs must be globally unique identifiers.  
 
 ## Pipeline flow methods
 
 The API provides the following:
 
-```
+```js
 // Loads the pipelineFlow document provided into common-canvas and displays it.
 // The document must conform to the pipelineFlow schema as documented in the
 // elyra-ai pipeline-schemas repo. Documents conforming to older versions may be
@@ -59,8 +61,16 @@ clearPipelineFlow()
 // pipelineFlow schema as documented in the elyra-ai pipeline-schemas repo.
 getPipelineFlow()
 
+// Returns the current pipelineFlow document ID.
+getPipelineFlowId()
+
 // Returns the ID of the primary pipeline from the pipelineFlow.
 getPrimaryPipelineId()
+
+// Returns the external pipeline flow for the url passed in. The external
+// flow must have been loaded through some common canvas action for this
+// method to be able to return anything.
+getExternalPipelineFlow(url) {
 
 // Returns the internal format of all canvas data stored in memory by
 // common-canvas. Nodes, comments and links are returned in the internal
@@ -80,15 +90,26 @@ removeAllStyles(temporary)
 // branch highlighting.
 // newStyle - is a style specification object. See wiki for details.
 setSubdueStyle(newStyle)
-
-
-
-
 ```
 
 ## Pipeline methods
 
-```
+```js
+// Returns the pipeline object for the pipeline Id passed in.
+getPipeline(pipelineId)
+
+// Returns the ID of the pipeline object which is currently on display
+// in the canvas. Typically, this is the primary pipeline but will be
+// different if the user has navigated into one or more supernodes; in
+// which case it will be the ID of the pipeline at the level in the
+// supernode hierarchy that is currently on display.
+getCurrentPipelineId()
+
+// Returns truty if the pipeline is external (that is it is part of an
+// external pipeline flow). Otherwise, return falsy to indicate the pipeline
+// is local.
+isPipelineExternal(pipelineId)
+
 // Returns the flow validation messages for the pipeline ID passed in.
 getFlowMessages(pipelineId)
 
@@ -101,12 +122,11 @@ isFlowValid(includeMsgTypes, pipelineId)
 // pipeline ID passed in.
 // layoutDirection - can be "horizontal" or "vertical"
 autoLayout(layoutDirection, pipelineId)
-
 ```
 
 ## Palette methods
 
-```
+```js
 // Loads the palette data as described in the palette schema in
 // elyra-ai pipeline-schemas repo. Any version can be loaded and it will be
 // upgraded to the latest version.
@@ -179,13 +199,11 @@ getCategoryForNode(nodeOpIdRef)
 // Converts a node template from the format use in the palette (that conforms
 // to the schema) to the internal node format.
 convertNodeTemplate(nodeTemplate)
-
 ```
 
 ## Selections methods
 
-```
-
+```js
 // Sets the currently selected objects replacing any current selections.
 // newSelection - An array of object IDs for nodes and/or comments
 // pipelineId - Optional. The ID of the pipeline where the objects exist.
@@ -219,15 +237,13 @@ deleteSelectedObjects()
 // Returns true if the currently selected objects are all linked together.
 // This is used when deciding to creating a supernode.
 areSelectedNodesContiguous()
-
-
 ```
 
 ## Notification messages methods
 
-The notification panel is displayed by the user by clicking the notifications icon in the toolbar. Your application can display whatever messages it wants in the notification panel. See the <a href="notification-spec">Notification Messages Specification</a> documentation for the structure of message objects. The contents of the notification panel can be managed using the methods below:
+The notification panel is displayed by the user by clicking the notifications icon in the toolbar. Your application can display whatever messages it wants in the notification panel. See the <Link to="/common-canvas/canvas-controller/notification-spec">Notification Messages Specification</Link> documentation for the structure of message objects. The contents of the notification panel can be managed using the methods below:
 
-```
+```js
 // Overwrites the array of notification messages shown in the notification
 // panel.
 // newMessage - An array of messages (see getNotificationMessages)
@@ -257,9 +273,6 @@ getNotificationMessages(messageType)
 // Returns the maximum notification message type present in the current set
 // of notification messages. For this: ("error" > "warning" > "success" > "info")
 getNotificationMessagesMaxType()
-
-
-
 ```
 
 ## Node AND comment methods
@@ -267,11 +280,11 @@ getNotificationMessagesMaxType()
 
 In common-canvas nodes and comments are collectively known as objects. The following methods may be used to manage either collections of comments or nodes or a mixture of both. Note:
 
-  *  See <a href="style-spec">this section</a> if you are working with styles.
-  *  See <a href="decorator-spec">this section</a> if you are working with decorations.
-  *  See <a href="api-object-structure#api-differences-with-schema">this section</a> for differences between the structure of objects in the API and the schema.
+  *  See <Link to="/common-canvas/canvas-controller/style-spec">this section</Link> if you are working with styles.
+  *  See <Link to="/common-canvas/canvas-controller/decorator-spec">this section</Link> if you are working with decorations.
+  *  See <Link to="/common-canvas/canvas-controller/api-object-structure#api-differences-with-schema">this section</Link> for differences between the structure of objects in the API and the schema.
 
-```
+```js
 // Moves the objects identified in the data object which must be in the
 // pipeline identified by the pipeline ID.
 // data - A javascript object like this:
@@ -324,12 +337,11 @@ setObjectsStyle(pipelineObjectIds, newStyle, temporary)
 // temporary - A boolean to indicate if the styles are serialized when
 //             getPipelineFlow() method is called or not.
 setObjectsMultiStyle(pipelineObjStyles, temporary)
-
 ```
 
 ## Node methods
 
-```
+```js
 // Retuns an array of nodes for the pipeline specified by the pipelineId.
 getNodes(pipelineId)
 
@@ -496,8 +508,6 @@ getNodeStyle(nodeId, temporary, pipelineId)
 // nodeId - The ID of the node
 // pipelineId - The ID of the pipeline
 isSuperNodeExpandedInPlace(nodeId, pipelineId)
-
-
 ```
 
 The format of the message object is described in Pipeline Flow UI schema: https://github.com/elyra-ai/pipeline-schemas/blob/master/common-pipeline/pipeline-flow/pipeline-flow-ui-v1-schema.json
@@ -505,7 +515,7 @@ The format of the message object is described in Pipeline Flow UI schema: https:
 
 ## Comment methods
 
-```
+```js
 // Returns the comments from the pipeline.
 // pipelineId - The ID of the pipeline
 getComments(pipelineId)
@@ -557,12 +567,11 @@ getCommentClassName(commentId, pipelineId)
 //             getPipelineFlow() method is called or not.
 // pipelineId - The ID of the pipeline
 getCommentStyle(commentId, temporary, pipelineId)
-
 ```
 
 ## Link methods
 
-```
+```js
 // Gets a link
 // linkId - The ID of the link
 // pipelineId - The ID of the pipeline
@@ -702,13 +711,26 @@ setLinksMultiDecorations(pipelineLinkDecorations)
 // linkId - The ID of the link
 // pipelineId - The ID of the pipeline
 getLinkDecorations(linkId, pipelineId)
-
-
 ```
+
+## Breadcrumbs methods
+
+```js
+// Returns the current array of breadcrumbs. There will one breadcrumb object
+// for each level of supernode that the user has navigated into. This array
+// can be used to display breadcrumbs to the user to show where they are
+// within the navigation hierarchy within common canvas.
+getBreadcrumbs()
+
+// Returns the last breadcrumb which represents the level with supernode
+// hierarchy that the user has currently navigated to.
+getCurrentBreadcrumb()
+```
+
 
 ## Branch highlight methods
 
-```
+```js
 // Highlights the branch(s) (both upstream and downstream) from the node
 // IDs passed in and returns the highlighted object Ids.
 // nodeIds - An array of node Ids
@@ -726,8 +748,6 @@ highlightUpstream(nodeIds, pipelineId)
 // nodeIds - An array of node Ids
 // pipelineId - The ID of the pipeline
 highlightDownstream(nodeIds, pipelineId)
-
-
 ```
 
 ## Operational methods
@@ -735,7 +755,7 @@ highlightDownstream(nodeIds, pipelineId)
 These are general purpose methods for operation of the canvas:
 
 
-```
+```js
 // Returns a Boolean to indicate whether canvas logging is switched on or off. 
 getLoggingState()
 
@@ -762,6 +782,18 @@ openNotificationPanel()
 
 // Closes the notification panel
 closeNotificationPanel()
+
+// Either opens or closes the notifictaion panel based on its current status
+toggleNotificationPanel()
+
+// Returns a boolean to indicate of the right flyout is open or not
+isRightFlyoutOpen()
+
+// Displays full-page the pipeline refreneced by the supernode object passed in
+displaySubPipeline(node)
+
+// Displays full-page the previous pipeline from the one currently being displayed
+displayPreviousPipeline()
 
 // Centers the canvas contents and zooms in
 zoomIn()
@@ -909,6 +941,4 @@ getZoomToReveal(objectIds, xPos, yPos)
 // is only applicable when the `enableSaveZoom` config parameter is
 // set to "LocalStorage".
 clearSavedZoomValues()
-
 ```
-

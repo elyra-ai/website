@@ -65,10 +65,14 @@ getPropertyValues(options)
 /*
  * Returns current list of error messages
  * @filteredPipeline (boolean) optional
+ * @filterHiddenDisable (boolean) optional. If true, will not return error messages from controls that are hidden or disabled
+ * @filterDisplayError (boolean) optional. If true, will not return error messages that are not displayed in the editor
  * when filteredPipeline=true returns enabled/visible control messages and only 1 per control.
  */
-getErrorMessages(filteredPipeline)
-getErrorMessage(propertyId)  
+getAllErrorMessages()
+getErrorMessages(filteredPipeline, filterHiddenDisable, filterSuccess, filterDisplayError = true)
+getErrorMessage(propertyId, filterHiddenDisable = false, filterSuccess = false, filterDisplayError = true)  
+getRequiredErrorMessages()
 setErrorMessages(messages)  
 updateErrorMessage(propertyId, message) 
 
@@ -272,4 +276,61 @@ getMaxLengthForMultiLineControls()
  */
 getMaxLengthForSingleLineControls()
 
+```
+
+## Enabling/disabling addRemoveRows methods
+
+```
+/*
+ * Set the addRemoveRows attribute to 'enabled' for the given propertyId
+ * @param propertyId The unique property identifier
+ * @param enabled boolean value to enable or disable addRemoveRows
+ */
+setAddRemoveRows(propertyId, enabled)
+
+/*
+ * Returns the true if addRemoveRows is enabled for the given propertyID
+ * @param propertyId The unique property identifier
+ * @return boolean
+ */
+getAddRemoveRows(propertyId)
+```
+
+
+## Enabling/disabling properties editor "save" button methods
+
+```
+/*
+ * Set the main "save" button to disabled(true) or enabled(false)
+ * @param saveDisable (boolean)
+ */
+setSaveButtonDisable(saveDisable)
+
+/*
+ * Returns the true if the main "save" button is disabled, false otherwise
+ * @return boolean
+ */
+getSaveButtonDisable() 
+```
+
+### Add static rows for table controls which will disable the re-ordering of the rows that are set as static for the given propertyId
+```js
+/*
+ * Set static rows for the given propertyId
+ * @param propertyId The unique property identifier
+ * @param staticRowsArr Array of first n row indexes or last n row indexes
+ */
+updateStaticRows(propertyId, staticRowsArr)
+
+/*
+ * Returns the static rows set for the given propertyId
+ * @param propertyId The unique property identifier
+ */
+getStaticRows(propertyId)
+
+/*
+ * Removes the static rows set for the given propertyId
+ * @param propertyId The unique property identifier
+ */
+clearStaticRows(propertyId)
 ```

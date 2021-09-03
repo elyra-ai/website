@@ -23,8 +23,6 @@
       title: 'Tutorials and examples'
     - path: /getting-started-ai/getting-help
       title: 'Getting help'
-    - path: /getting-started-ai/changelog
-      title: 'Changelog'
 - title: User guide
   pages:
     - path: /user-guide/command-line-interface

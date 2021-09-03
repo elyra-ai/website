@@ -4,6 +4,7 @@ description: Canvas config
 tabs: ['Canvas config', 'Toolbar config', 'Notification config', 'Context menu config', 'Keyboard config']
 ---
 
+import { Link } from 'gatsby';
 
 <PageDescription>
 
@@ -15,7 +16,6 @@ Below you'll find Canvas config objects.
 
 <AnchorLinks small>
   <AnchorLink>enableInteractionType</AnchorLink>
-  <AnchorLink>enableConnectionType</AnchorLink>
   <AnchorLink>enableNodeFormatType</AnchorLink>
   <AnchorLink>enableLinkType</AnchorLink>
   <AnchorLink>enableLinkDirection</AnchorLink>
@@ -60,7 +60,6 @@ The canvas config object should contain one or more of the following properties:
 
 ```    const commonCanvasConfig = { 
        "enableInteractionType": "Trackpad",
-       "enableConnectionType": "Ports",  // @deprecated
        "enableNodeFormatType": "Horizontal",
        "enableLinkType": "Curve",
        "enableLinkDirection": "LeftRight",
@@ -78,6 +77,7 @@ The canvas config object should contain one or more of the following properties:
        "enableExternalPipelineFlows": true,
        "enableMoveNodesOnSupernodeResize": true,
        "enableDisplayFullLabelOnHover": true,
+       "enableSingleOutputPortDisplay": true,
        "enableDragWithoutSelect": true,
        "enableDropZoneOnExternalDrag": true,
        "enableNodeLayout":{
@@ -134,16 +134,6 @@ This can be "Mouse" or "Trackpad". The default is "Mouse".
    *  Region select on canvas = Finger down + drag.
     (Can be simulated with a mouse as follows: Left button down + drag on canvas background)
 
-
-### enableConnectionType
-
-<InlineNotification kind="warning">
-
-**Warning:** This feature is deprecated. It will be removed in a future release and Elyra Canvas will default to the "Ports" option.
-
-</InlineNotification>
-
-This can be "Ports" or "Halo". "Ports" is the default. "Ports" will display ports in the form of circles to the left and right of the node which are based on the inputs and outputs provided in the pipeline flow document. Nodes are connected by dragging from one output port to an input port. "Halo" will use simple arrows to connect nodes and uses the blue circle Halo to allow a connection to be created.
 
 ### enableNodeFormatType
 
@@ -203,7 +193,7 @@ This can be: "Modal" or "Flyout" or "None". The default is "Flyout". "Flyout" di
 
 ### enableToolbarLayout
 
-This can be: "Top" or "None". The default is "Top". "Top" displays a toolbar at the top of the canvas area. See the <a href="toolbar-config#toolbar-config-object">toolbar configuration object docs</a> for details on how to customize the toolbar. "None" stops the toolbar from appearing.
+This can be: "Top" or "None". The default is "Top". "Top" displays a toolbar at the top of the canvas area. See the <Link to="/common-canvas/config/toolbar-config#toolbar-config-object">toolbar configuration object docs</Link> for details on how to customize the toolbar. "None" stops the toolbar from appearing.
 
 ### enableInsertNodeDroppedOnLink
 
@@ -242,7 +232,7 @@ This can be true or false. The default is false. If true, the context menu will 
 
 <InlineNotification kind="warning">
 
-Warning: The host application must implement some of the common-canvas callbacks for external pipeline flow support to work correctly. See the <a href="/common-canvas/external-subflows-support">Wiki section on external pipeline flow support</a> for more details.
+Warning: The host application must implement some of the common-canvas callbacks for external pipeline flow support to work correctly. See the <Link to="/common-canvas/external-subflows-support">Wiki section on external pipeline flow support</Link> for more details.
 enableDisplayFullLabelOnHover
 
 </InlineNotification>
@@ -253,6 +243,10 @@ This can be true or false. The default is false. If set to true, any abbreviated
 
 This can be true or false. The default is false. If set to true, any abbreviated node label will be displayed in full when the pointer hovers over the label. If set to false, abbreviated node labels will remain the same when the pointer hovers over them.
 
+### enableSingleOutputPortDisplay
+
+This can be true or false. The default is false. If set to true, only the last of the ports from the array of output ports will be displayed for each node. This config property is only applicable to applications with very specialized styling and handling of ports. If set to true with regular applications, it may result in a confusing display to the user.
+
 ### enableDragWithoutSelect
 
 This can be either true or false. The default is false. If set to true, the user can drag and drop a single node or a single comment without that gesture removing selection on any other nodes or comments. If the node being dragged was selected prior to the drag gesture then it and any other objects that are currently selected will be moved. With this parameter set to false (or missing) a drag and drop gesture will select the node or comment being dragged and will deselect any currently selected objects.
@@ -261,11 +255,11 @@ This can be either true or false. The default is false. If set to true, the user
 
 This can be true or false. The default is false. If set to true a graphic overlay will be displayed over the canvas when a data object icon is dragged from the desktop over the canvas. The default graphic overlay will be an image and a message saying: "Drop to add to canvas and project" unless the `dropZoneCanvasContent` configuration parameter is provided.
 
-See the <a href="/common-canvas/enabling-external-node-creation#dragging-object-from-the-desktop-or-another-application">Dragging an object from the desktop</a> section of the Wiki for details on how to handle the drop of an external object onto the canvas.
+See the <Link to="/common-canvas/enabling-external-node-creation#dragging-object-from-the-desktop-or-another-application">Dragging an object from the desktop</Link> section of the Wiki for details on how to handle the drop of an external object onto the canvas.
 
 ### enableNodeLayout
 
-This is a simple Javascript object, the properties of which override the default node layout properties. For more details see: <a href="/common-canvas/customizing-node-layout">Customizing Node Layout Properties</a>
+This is a simple Javascript object, the properties of which override the default node layout properties. For more details see: <Link to="/common-canvas/customizing-node-layout">Customizing Node Layout Properties</Link>
 
 ### enableSaveZoom
 
@@ -347,6 +341,6 @@ This can be true or false. false is the default. It tells common canvas whether 
 
 ### tipConfig
 
-Object that configures whether tips for palette items, nodes, ports or links are enabled (value set to true) or disabled (value set to false). By default, all tips are enabled. The default content of tips can be overwritten by implementing the <a href="/common-canvas/callbacks#tiphandler">tipHandler callback</a>.
+Object that configures whether tips for palette items, nodes, ports or links are enabled (value set to true) or disabled (value set to false). By default, all tips are enabled. The default content of tips can be overwritten by implementing the <Link to="/common-canvas/callbacks#tiphandler">tipHandler callback</Link>.
 
 

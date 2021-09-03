@@ -4,13 +4,242 @@ title: How do I contribute?
 
 <PageDescription>
 
-Discuss with Elyra AI team the best way for them to approach contributions.
+This guide documents the best way to make various types of contribution to the Elyra projects,
+including what is required before submitting a documentation or code change and how to properly merge them.
 
   </PageDescription>
 
-Set up a series of steps for this area. Document the process using an ordered list.
 
-1. do this.
-2. do this next.
-3. complete this step.
-4. finish the process. 
+<InlineNotification>
+Contributing to the Elyra project doesn't just mean writing code. Helping testing and reviewing pull requests
+and improving documentation are also welcome. In fact, proposing significant code changes usually requires first
+gaining experience and credibility within the community by helping in other ways. This is also a guide to 
+becoming an effective contributor.
+</InlineNotification>
+
+<AnchorLinks>
+  <AnchorLink>Code of conduct</AnchorLink>
+  <AnchorLink>Contributing documentation changes</AnchorLink>
+  <AnchorLink>Contributing code changes</AnchorLink>
+  <AnchorLink>Suggested issues</AnchorLink>
+  <AnchorLink>Talking to the contributors</AnchorLink>
+</AnchorLinks>
+
+## Code of conduct
+
+
+
+As contributors and maintainers of this project, and in the interest of fostering
+an open and welcoming community, we pledge to respect all people who contribute
+through reporting issues, posting feature requests, updating documentation,
+submitting pull requests or patches, and other activities.
+
+<AnchorLinks small>
+  <AnchorLink>Our standards</AnchorLink>
+  <AnchorLink>Enforcement responsibilities</AnchorLink>
+  <AnchorLink>Scope</AnchorLink>
+  <AnchorLink>Enforcement</AnchorLink>
+  <AnchorLink>Attrition</AnchorLink>
+</AnchorLinks>
+
+We are committed to making participation in this project a harassment-free experience for
+everyone, regardless of level of experience, gender, gender identity and expression,
+sexual orientation, disability, personal appearance, body size, race, ethnicity, age,
+religion, or nationality.
+
+
+We pledge to act and interact in ways that contribute to an open, welcoming, diverse,
+inclusive, and healthy community.
+
+
+  ### Our standards
+
+    Examples of behavior that contributes to a positive environment for our community include:
+
+      * Demonstrating empathy and kindness toward other people
+      * Being respectful of differing opinions, viewpoints, and experiences
+      * Giving and gracefully accepting constructive feedback
+      * Accepting responsibility and apologizing to those affected by our mistakes, and learning from the experience
+      * Focusing on what is best not just for us as individuals, but for the overall community
+
+      Examples of unacceptable behavior include:
+
+      * The use of sexualized language or imagery, and sexual attention or
+        advances of any kind
+      * Trolling, insulting or derogatory comments, and personal or political attacks
+      * Public or private harassment
+      * Publishing others' private information, such as a physical or email
+        address, without their explicit permission
+      * Other conduct which could reasonably be considered inappropriate in a
+        professional setting
+  
+  ### Enforcement responsibilities
+
+    Community leaders are responsible for clarifying and enforcing our standards of acceptable behavior
+and will take appropriate and fair corrective action in response to any behavior that they deem
+inappropriate, threatening, offensive, or harmful.
+
+Community leaders have the right and responsibility to remove, edit, or reject comments, commits,
+code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct,
+and will communicate reasons for moderation decisions when appropriate.
+
+
+### Scope
+
+This Code of Conduct applies within all community spaces including Gitter, issue trackers, wikis,
+blogs, Twitter, and any other communication channels used by our community, and also applies when
+an individual is officially representing the community in public spaces. Examples of representing
+our community include using an official e-mail address, posting via an official social media account,
+
+### Enforcement
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community
+leaders responsible for enforcement via e-mail to the Elyra Project Management Committee at
+elyra-pmc AT googlegroups DOT com. All complaints will be reviewed and investigated promptly and fairly.
+
+All community leaders are obligated to respect the privacy and security of the reporter of any incident.
+  
+  ### Attrition
+  
+  This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/),
+version 2.0, available at https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
+
+## Contributing documentation changes
+
+To create or modify the project documentation, edit the Markdown source files which is usually located at
+$project/docs directory, whose README file shows how to build the documentation locally to test your changes.
+
+The process to propose a doc change is otherwise the same as the process for proposing code changes below.
+
+## Contributing code changes
+
+Please review the preceding section before proposing a code change. This section documents how to do so.
+
+<AnchorLinks small>
+  <AnchorLink>Before creating a Pull Request</AnchorLink>
+  <AnchorLink>Creating a Pull Request</AnchorLink>
+  <AnchorLink>The Review Process</AnchorLink>
+  <AnchorLink>Merging Pull Requests</AnchorLink>
+</AnchorLinks>
+
+When you contribute code, you affirm that the contribution is your original work and that you license the
+work to the project under the project's open source license.
+
+Whether or not you state this explicitly, by submitting any copyrighted material via pull request, email,
+or other means you agree to license the material under the project's open source license and warrant that you
+have the legal authority to do so.
+
+
+
+### Before creating a Pull Request
+
+1.Make sure you have the most up to date code
+
+If you haven't done so, please set upstream as described in [GitHub Documentation](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
+
+Make sure you do not have any uncommitted changes and rebase master with latest changes from upstream:
+
+```
+git fetch upstream
+git checkout master
+git rebase upstream/master
+```
+
+Now you should rebase your branch with master, to receive the upstream changes
+
+```
+git checkout branch
+git rebase master
+```
+
+In both cases, you can have conflicts:
+
+```
+error: could not apply fa39187... something to add to patch A
+
+When you have resolved this problem, run "git rebase --continue".
+If you prefer to skip this patch, run "git rebase --skip" instead.
+To check out the original branch and stop rebasing, run "git rebase --abort".
+Could not apply fa39187f3c3dfd2ab5faa38ac01cf3de7ce2e841... Change fake file
+```
+
+Here, Git is telling you which commit is causing the conflict (fa39187). You're given three choices:
+
+* You can run `git rebase --abort` to completely undo the rebase. Git will return you to your branch's
+state as it was before git rebase was called.
+* You can run `git rebase --skip` to completely skip the commit. That means that none of the changes
+introduced by the problematic commit will be included. It is very rare that you would choose this option.
+* You can fix the conflict.
+
+To fix the conflict, you can follow [the standard procedures for resolving merge conflicts from the command line](https://help.github.com/articles/resolving-a-merge-conflict-from-the-command-line). 
+When you're finished, you'll need to call `git rebase --continue` in order for Git to continue processing
+the rest of the rebase.
+
+<InlineNotification>
+
+**Note:** If there are any merge conflicts with the `yarn.lock` file, there is no need to manually resolve them. Simply run `yarn install` and yarn will do its
+best to automatically resolve any conflicts.
+
+</InlineNotification>
+
+
+### Creating a Pull Request
+
+1. Fork the Github repository at https://github.com/elyra-ai/xxx if you haven't already
+1. Clone your fork, create a new branch, push commits to the branch.
+1. Consider whether documentation or tests need to be added or updated as part of the change, and add them as needed.
+1. Open a pull request against the master branch of elyra-ai/elyra. (Only in special cases would the PR be opened 
+   against other branches.)
+  1. The PR title should describe the proposed change in the PR itself.
+  1. If the pull request is still a work in progress, and so is not ready to be merged, but needs to be pushed 
+     to Github to facilitate review, then prefix the PR title with `[WIP]`.
+  1. Follow [The 7 rules for a great commit message](http://chris.beams.io/posts/git-commit/)
+     * Separate subject from body with a blank line
+     * Limit the subject line to 50 characters
+     * Capitalize the subject line
+     * Do not end the subject line with a period
+     * Use the imperative mood in the subject line
+     * Wrap the body at 72 characters
+     * Use the body to explain what and why vs. how
+
+### The Review Process
+
+
+The review process can help the project achieve a high-quality code base. When performing code reviews,
+various aspects should be considered, and the following
+[code review checklist](https://www.michaelagreiler.com/wp-content/uploads/2019/08/Code_Review_Checklist_Greiler.pdf)
+give some examples of such items.
+
+What to expect from the review process?
+
+* Other reviewers, including committers, may comment on the changes and suggest modifications. Changes can be added
+  by simply pushing more commits to the same branch.
+* Lively, polite, rapid technical debate is encouraged from everyone in the community. The outcome may be a
+  rejection of the entire change.
+* Reviewers can indicate that a change looks suitable for merging with a comment such as: 
+  "I think this patch looks good". Elyra uses the LGTM convention for indicating the strongest level of 
+  technical sign-off on a patch: simply comment with the word "LGTM". It specifically means: 
+  "I've looked at this thoroughly and take as much ownership as if I wrote the patch myself". If you comment LGTM 
+  you will be expected to help with bugs or follow-up issues on the patch. Consistent, judicious use of LGTMs
+  is a great way to gain credibility as a reviewer with the broader community.
+* Sometimes, other changes will be merged which conflict with your pull request's changes. The PR can't be merged
+  until the conflict is resolved. This can be resolved with "git fetch origin" followed by "git merge origin/master" 
+  and resolving the conflicts by hand, then pushing the result to your branch.
+* Try to be responsive to the discussion rather than let days pass between replies
+
+### Merging Pull Requests
+
+To avoid a convoluted master branch history, with lots of "merge xxx" on the commit history, we are not using the
+GitHub `merge pull request` UI option and recommending either `squash and merge` or `rebase and merge` options. 
+
+
+## Suggested Issues
+
+- Issues tagged as Good first issue: https://github.com/elyra-ai/elyra/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22
+- Issues tagged as Help wanted: https://github.com/elyra-ai/elyra/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22
+
+
+## Talking to the contributors
+
+-  Find us on gitter: https://gitter.im/elyra-ai/community
+- Come to our weekly dev meeting on Thursdays: https://elyra.readthedocs.io/en/latest/getting_started/getting-help.html#join-the-weekly-community-meeting

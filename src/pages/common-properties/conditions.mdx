@@ -36,7 +36,7 @@ The attributes for the validation definition are:
     *   `type` (string) Type of messages. Valid values are `error, warning, info`.
  *  `evaluate` (object) Specification for how to evaluate the validity of the parameter. The evaluate attribute can be one of the following structures.
       *  `condition` (object) This is a single condition that evaluates to true or false.
-          *  `op` (string) **Required** A single operator for the properties of the condition. Valid values are: `isEmpty`, `isNotEmpty`, `greaterThan`, `lessThan`, `equals`, `notEquals`, `contains`, `notContains`, `colNotExists`, `isDateTime`, `dmTypeEquals`, `dmTypeNotEquals`, `dmMeasurementEquals`, `dmMeasurementNotEquals`, `dmRoleEquals`, `dmRoleNotEquals`.
+          *  `op` (string) **Required** A single operator for the properties of the condition. Valid values are: `isEmpty`, `isNotEmpty`, `greaterThan`, `lessThan`, `equals`, `notEquals`, `matches`, `notMatches`, `contains`, `notContains`, `colNotExists`, `isDateTime`, `dmTypeEquals`, `dmTypeNotEquals`, `dmMeasurementEquals`, `dmMeasurementNotEquals`, `dmRoleEquals`, `dmRoleNotEquals`, `lengthEquals`, `lengthGreaterThan`, `lengthLessThan`.
           *  `parameter_ref` (string) **Required** The primary parameter.
           *  `parameter_2_ref` (string) Second parameter for multi-parameter validation.
           *  `value` (string, boolean, number) Value against which to compare the primary parameter value.

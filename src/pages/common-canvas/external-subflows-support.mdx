@@ -3,10 +3,11 @@ title: External subflows support
 description: External subflows support
 ---
 
+import { Link } from 'gatsby';
 
 <PageDescription>
 
-You can _optionally_ provide callback listeners. These will be called when the user interacts with the canvas.
+The pipeline flow that common-canvas displays can optionally refer to pipelines that are external to the pipeline flow being displayed. This allows flows to be referenced from multiple pipeline flows allowing flow reuse. If your app needs to support this you will need to write some code to `save` and `return` the external pipeline flows when requested. 
 
 </PageDescription>
 
@@ -41,22 +42,29 @@ Common-canvas supports lazy loading of external pipeline flows so they will only
 
 ## Creating an external sub-flow
 
-When the common-canvas config property <a href="/common-canvas/config/canvas-config#enableexternalpipelineflows">enableExternalPipelineFlows</a> is set to true the default common-canvas context menu will include a `Create External Supernode` option when a set of objects are selected from which a super node can be created.
+When the common-canvas config property <Link to="/common-canvas/config/canvas-config#enableexternalpipelineflows">enableExternalPipelineFlows</Link> is set to true the default common-canvas context menu will include a `Create External Supernode` option when a set of objects are selected from which a super node can be created.
 
 When the `Create External Supernode` option is clicked the `createSuperNodeExternal` action is executed.
 
-If your application doesn't use the default context menu you can define your own context menu (returned from `contextMenuHandler`) to contain an option which maps to the `createSuperNodeExternal` action. See the section on the <a href="/common-canvas/callbacks#contextmenuhandler">contextMenuHandler</a> for details on how to do this.
+If your application doesn't use the default context menu you can define your own context menu (returned from `contextMenuHandler`) to contain an option which maps to the `createSuperNodeExternal` action. See the section on the <Link to="/common-canvas/callbacks#contextmenuhandler">contextMenuHandler</Link> for details on how to do this.
 
 When the `createSuperNodeExternal` action is executed, the `beforeEditActionHandler` callback is called before the external sub-flow is created. The `beforeEditActionHandler` is called where the first parameter `data` has two properties `externalUrl` and `externalPipelineFlowId` which will both be set to empty string. Your code must set these to whatever values you want for the url and pipeline flow ID. The url will be assigned to the `subflow_ref.url` property of the supernode that is being created. The pipeline flow ID will be assigned to the newly created pipeline flow.
 
-Your code must return the `data` parameter from the `beforeEditActionHandler` callback if you want the action to proceed and create the sub-flow. If you need to do any asynchronous activity at this point see the documentation on the <a href="/common-canvas/callbacks#beforeeditactionhandler">beforeEditActionHandler</a> for details on how to do that.
+Your code must return the `data` parameter from the `beforeEditActionHandler` callback if you want the action to proceed and create the sub-flow. If you need to do any asynchronous activity at this point see the documentation on the <Link to="/common-canvas/callbacks#beforeeditactionhandler">beforeEditActionHandler</Link> for details on how to do that.
 
 When the sub-flow has been created common-canvas will call the `editActionHandler` callback. In this callback you can, if you wish, retrieve the pipeline flow document that has been created internally in common-canvas using `CanvasController.getExternalPipelineFlow(url)`. Your code can then save it to your repository. Alternatively, you can wait until some later time, like perhaps during an auto-save, to retrieve and store the pipeline flow externally in your repository.
 
 
 ## Loading an external sub-flow
 
-When the main pipeline flow, displayed by common-canvas, contains a super node that references an external sub-flow it will be loaded whenever the user performs a gesture that causes it to be displayed - like opening it 'in-place'. When that happens common-canvas will call the `beforeEditActionHandler` callback with the data parameter's `editType` property set to `expandSuperNodeInPlace`. The data parameter will also have these properties:
+When the main pipeline flow, displayed by common-canvas, contains a super node that references an external sub-flow it may need to be loaded whenever the user performs a gesture that causes it to be displayed - like opening it 'in-place'. An external sub-flow may also need to be loaded if the top-level pipeline being displayed has a supernode, that refers to an external pipeline, that is already expanded in-place in the saved pipeline flow JSON document being displayed. so, actions that can cause the external pipeline to be loaded are:
+
+* loadPipelineFlow
+* expandSuperNodeInPlace
+* displaySubPipeline
+* convertSuperNodeExternalToLocal
+
+When any of these actions are performed common-canvas will call the `beforeEditActionHandler` callback with the data parameter as the first parameter. The data object will have the following properties:
 
 * externalPipelineFlowLoad - This is a boolean which indicates whether the pipeline flow needs to be provided by your code.
 * externalUrl - This is the string which identifies the external pipeline flow document.
@@ -65,40 +73,42 @@ When the main pipeline flow, displayed by common-canvas, contains a super node t
 
 You need to implement the `beforeEditActionHandler` so that,
 
-* when the `expandSuperNodeInPlace` action is being performed you retrieve the external pipeline flow from your repository
+* when the actions above are being performed and externalPipelineFlowLoad is true, you retrieve the external pipeline flow from your repository
 * you then assign it to the `externalPipelineFlow` property of the data object
 * you then return the data object from the callback.
 
-Your code must return the `data` parameter from the `beforeEditActionHandler` callback if you want the action to proceed and load the external pipeline flow. If you need to do any asynchronous activity at this point see the documentation on the <a href="/common-canvas/callbacks#beforeeditactionhandler">beforeEditActionHandler</a> for details on how to do that.
+Your code must return the `data` parameter from the `beforeEditActionHandler` callback if you want the action to proceed and load the external pipeline flow. If you need to do any asynchronous activity at this point see the documentation on the <Link to="/common-canvas/callbacks#beforeeditactionhandler">beforeEditActionHandler</Link> for details on how to do that.
 
 
 ## Converting a local supernode to an external supernode
 
-When the common-canvas config property <a href="/common-canvas/config/canvas-config#enableexternalpipelineflows">enableExternalPipelineFlows</a> is set to true, and a local supernode is right clicked, the default common-canvas context menu will include a `Convert local to external` option. This will execute the `convertSuperNodeLocalToExternal` action.
+When the common-canvas config property <Link to="/common-canvas/config/canvas-config#enableexternalpipelineflows">enableExternalPipelineFlows</Link> is set to true, and a local supernode is right clicked, the default common-canvas context menu will include a `Convert local to external` option. This will execute the `convertSuperNodeLocalToExternal` action.
 
-The `convertSuperNodeLocalToExternal` action is similar to the `createSuperNodeExternal` action in that a new external pipeline flow is being created. Consequently, you can follow the instructions in the <a href="#creating-an-external-sub-flow">Creating an external sub-flow</a> section for providing the appropriate properties of the `data` object in the `beforeEditActionHandler` and `editActionHandler` callbacks.
+The `convertSuperNodeLocalToExternal` action is similar to the `createSuperNodeExternal` action in that a new external pipeline flow is being created. Consequently, you can follow the instructions in the <Link to="#creating-an-external-sub-flow">Creating an external sub-flow</Link> section for providing the appropriate properties of the `data` object in the `beforeEditActionHandler` and `editActionHandler` callbacks.
 
 
 
 ## Converting an external supernode to a local supernode
 
-When the common-canvas config property <a href="/common-canvas/config/canvas-config#enableexternalpipelineflows">enableExternalPipelineFlows</a> is set to true, and an external supernode is right clicked, the default common-canvas context menu will include a `Convert external to local` option. This will execute the `convertSuperNodeExternalToLocal` action.
+When the common-canvas config property <Link to="/common-canvas/config/canvas-config#enableexternalpipelineflows">enableExternalPipelineFlows</Link> is set to true, and an external supernode is right clicked, the default common-canvas context menu will include a `Convert external to local` option. This will execute the `convertSuperNodeExternalToLocal` action.
 
-The `convertSuperNodeExternalToLocal` action is similar to the `expandSuperNodeInPlace` action in that an external pipeline flow may need to be retrieved from your repository. Consequently, you can follow the instructions in the <a href="#creating-an-external-sub-flow">Loading an external sub-flow</a> section for providing the appropriate properties of the `data` object in the `beforeEditActionHandler` callback.
+The `convertSuperNodeExternalToLocal` action is similar to the `expandSuperNodeInPlace` action in that an external pipeline flow may need to be retrieved from your repository. Consequently, you can follow the instructions in the <Link to="#creating-an-external-sub-flow">Loading an external sub-flow</Link> section for providing the appropriate properties of the `data` object in the `beforeEditActionHandler` callback.
 
 
 ## Deleting an external supernode/sub-flow
 
-When the user deletes an external supernode/sub-flow the supernode will be removed from the canvas. You code does not need to do anything unless you want to also remove the external pipeline flow form your repository.
+When the user deletes an external supernode/sub-flow the supernode will be removed from the canvas. You code does not need to do anything unless you want to also remove the external pipeline flow from your repository.
 
 
 ## Clipboard support
 
-`< Not yet supported >`
+When a supernode, that refers to an external pipeline, is cut/copied and pasted, the pasted supernode refers to the same external pipeline as the supernode that was cut or copied. This means that if an external supernode is copied to the clipboard and then pasted into the same canvas the result will be two supernodes that refer to the same external pipeline.  
+
+The same situation can occur if a supernode, that refers to an external pipeline, is in the palette and that node is dragged multiple times from the palette onto the canvas.
 
 ## Manipulating objects in external pipelines using the Canvas Controller API
 
-`< Not yet supported >`
+Objects (nodes, links comments, etc.) in an external pipeline can be updated by the host application calling the `CanvasController` API. However, such changes are only effective within common-canvas. It is the host application's responsibility to make sure these changes are persisted in the external pipeline flow document (if that is the behavior that is required). This can be done by the host application calling `CanvasController.getExternalPipelineFlow(url)` and then saving the returned document to the appropriate repository.
 
 
 ## External pipelines in the Elyra Canvas Test Harness

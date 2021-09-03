@@ -4,6 +4,8 @@ description: Toolbar config
 tabs: ['Canvas config', 'Toolbar config', 'Notification config', 'Context menu config', 'Keyboard config']
 ---
 
+import { Link } from 'gatsby';
+
 <AnchorLinks small>
   <AnchorLink>action</AnchorLink>
   <AnchorLink>label</AnchorLink>
@@ -24,7 +26,17 @@ tabs: ['Canvas config', 'Toolbar config', 'Notification config', 'Context menu c
 
 ## Toolbar config object
 
-A toolbar will be displayed for common-canvas if the <a href="canvas-config#canvas-config-object">canvas configuration</a>. field `enableToolbarLayout` is set to "Top". The toolbar config object configures which actions are shown in the canvas toolbar. If you do not specify a toolbar config, common canvas will display a default toolbar. You can optionally specify actions for the left and right side of the toolbar to override the default toolbar. Here is an example, configuration object:
+The toolbar config object configures which action items (tools) and dividers are shown in the canvas toolbar. A toolbar will be displayed for common-canvas if the canvas configuration field <Link to="/common-canvas/config/canvas-config#canvas-config-object#enabletoolbarlayout">`enableToolbarLayout`</Link> is set to "Top". If you do not specify a toolbar config, common canvas will display a default toolbar. 
+
+If you choose to specify a toolbar config object, you can specify actions for the left and right sides of the toolbar to override the default toolbar and, optionally, tell the toolbar not to handle enable/disable for the standard toolbar buttons using `overrideAutoEnableDisable`. The `leftBar` and `rightBar` fields contain an array of objects: one element for each toolbar item. 
+
+Two toolbar items are automatically added to the toolbar:
+- A palette action which is used for opening and closing the node palette. This is added to the left side of the left side of the toolbar if the <Link to="/common-canvas/config/canvas-config#enablepalettelayout">`enablePaletteLayout`</Link> field is set to either "Flyout" (the default) or "Modal" in the canvas configuration.
+- A notification panel action which is used to open and close the notifications panel. This will be added to the right side of the right side of the toolbar if a <Link to="/common-canvas/config/canvas-config#notification-config-object">notification configuration</Link> object is specified to the `<CommonCanvas>` react object.
+
+The toolbar will display the objects in the same order they are defined in the arrays. 
+
+Here is an example, toolbar configuration object:
 
 ```    
 const toolbarConfig = {
@@ -44,20 +56,22 @@ const toolbarConfig = {
             { action: "stop", label: "Stop Execution", enable: false },
             { divider: true },
             { action: "run", label: "Run Pipeline", enable: false }
-        ]
+        ],
+        overrideAutoEnableDisable: false
     };
 ```
 
-If you provide the `leftBar` field but not the `rightBar` field, common-canvas will automatically populate the right side of the toolbar with zoom-in, zoom-out, and zoom-to-fit actions. To suppress these right side actions, specify the `rightBar` field as an empty array.
+Where:
+### leftBar
+An array of action items to specify what is displayed on the left side of the toolbar.
 
-There is no need to specify either a palette action or a notification panel action. These will automatically be added to your toolbar:
-* A palette action will be added to the left side of the toolbar if the `enablePaletteLayout` field is set to either "Flyout" (the default) or "Modal" in the <a href="/canvas-config#canvas-config-object">canvas configuration</a>.
+### rightBar
+An array of action items to specify what is displayed on the right side of the toolbar. If this is omitted, common-canvas will automatically populate the right side of the toolbar with zoom-in, zoom-out, and zoom-to-fit actions. To suppress these right side actions, specify the `rightBar` field as an empty array or an array containing the actions you want on the right.
 
-* A notification panel action will be added to the right side of the toolbar if a notification configuration object is specified to the <a href="/common-canvas/canvas-documentation"> CommonCanvas react object</a>.
+### overrideAutoEnableDisable
+A boolean. The default is false. If set to true it will switch off the auto-enablement feature of common-canvas. This is useful if the host application wants to disable all the nodes under certain circumstances. If set to true, the `enable` property in the action item is used to decide whether to display the icon as enabled or disabled. If set to false or omitted common-canvas will handle the auto-enablement of common actions. (See the `action`section below for more details.)  
 
-The toolbar will display the objects in the same order they are defined in the arrays.
-
-Here is an example of an action object which must contain an `action` field as a minimum.
+Here is an example of an action object which must contain a unique `action` field as a minimum.
 
 ```
 {
@@ -73,23 +87,31 @@ Here is an example of an action object which must contain an `action` field as a
 ```
 
 ### action 
-A unique identifier and the name of the action to be performed. This action name will be passed in the `data` parameter of the editActionHandler callback method so you can detect when the user clicks an action in the toolbar. The following actions will have default icons available so you don't need to specify `iconEnabled` or `iconDisabled` with them: `stop`, `run`, `undo`, `redo`, `cut`, `copy`, `paste`, `createAutoComment`, `deleteSelectedObjects`, `arrangeHorizontally`, `arrangeVertically`, `zoomIn`, `zoomOut`, and `zoomToFit`. If you are using the recommended internal object (`enableInternalObjectModel` canvas config field is set to true--_(the default_) these built in actions will be automatically handled by common-canvas. So for example, if the `deleteSelectedObjects` action (shown as a trash can) is clicked any selected objects will be deleted from the internal object model. Disablement of these built in actions is also handled by common-canvas so, for example, when no canvas objects are selected the `deleteSelectedObjects` action (trash can icon) will be automatically disabled.
+A unique identifier and the name of the action to be performed. This action name will be passed in the `data` parameter of the <Link to="/common-canvas/callbacks#editactionhandler">editActionHandler</Link> callback method so you can detect when the user clicks an action in the toolbar. 
 
+If you are using the recommended (and default) <Link to="/common-canvas/config/canvas-config#enableinternalobjectmodel">internal object model</Link>, the following built in actions will be automatically handled by common-canvas: `undo`, `redo`, `cut`, `copy`, `paste`, `createAutoComment`, `deleteSelectedObjects`, `arrangeHorizontally`, `arrangeVertically`, `zoomIn`, `zoomOut`, and `zoomToFit`. So for example, if the `deleteSelectedObjects` action (shown as a trash can) is clicked, any selected objects will be deleted from the internal object model.
+
+Disablement of some of these built in actions is also handled by common-canvas so, for example, when no canvas objects are selected the `deleteSelectedObjects` action (trash can icon) will be automatically disabled. You can switch off this automatic enable/disable function by setting `overrideAutoEnableDisable` field in the toolbar config to `true`. When set to true, the `enable` field in the action objects will be used to set the enablement appearance of the toolbar item.
+    
 ### label
 The Tooltip label to display (and optionally the text to display next to the icon if `incLabelWithIcon` is specified).
 
 ### enable
-Icon will have hover effect and is clickable when set to true. If false, icon will be disabled and unclickable. If not set, it will default to disabled (enable: false)
+Icon will have hover effect and is clickable when set to true. If false, icon will be disabled and unclickable. If not set, it will default to disabled (enable: false). This field is ignored for the standard action items (like cut, copy, paste) because common canvas handles their enable/disable appearance.
 
 ### iconEnabled
-Specifies the icon to display when `enable` is true. It can be either:
-* A string containing the path to a custom SVG file to display
-* A JSX expression, for example (`<Edit32 />`) where Edit32 is an imported icon. It is recommended to only pass very simple JSX expressions.
+Specifies the icon to display when `enable` is true. Common-canvas will provide icons for the following actions so you don't need to specify `iconEnabled` or `iconDisabled` for them: `stop`, `run`, `undo`, `redo`, `cut`, `copy`, `paste`, `createAutoComment`, `deleteSelectedObjects`, `arrangeHorizontally`, `arrangeVertically`, `zoomIn`, `zoomOut`, and `zoomToFit`. 
+
+It can be either:
+- a string containing the path to a custom SVG file to display or
+- a JSX expression, for example `(<Edit32 />)` where Edit32 is an icon imported from carbon icons. It is recommended to only pass very simple JSX expressions. 
 
 ### iconDisabled
-Specifies the icon to display when `enable` is false. If iconDisabled is not specified iconEnabled will be used instead. It can be either:
-* A string containing the path to a custom SVG file to display
-* A JSX expression, for example (`<Edit32 />`) where Edit32 is an imported icon. It is recommended to only pass very simple JSX expressions.
+specifies the icon to display when `enable` is false. If `iconDisabled` is *not* specified `iconEnabled` will be used instead. It can be omitted for any of the standard actions (see `iconEnabled` above). 
+
+It can be either:
+- a string containing the path to a custom SVG file to display or
+- a JSX expression, for example `(<Edit32 />)` where Edit32 is an icon imported from carbon icons. It is recommended to only pass very simple JSX expressions. 
 
 ### incLabelWithIcon
 Can be set to "none", "before" or "after". The default is "none". This field specifies whether the label should be displayed in the toolbar with the icon and if so, where it is displayed with respect to the icon.

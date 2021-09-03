@@ -3,6 +3,7 @@ title: Callbacks
 description: Callbacks
 ---
 
+import { Link } from 'gatsby';
 
 <PageDescription>
 
@@ -11,7 +12,7 @@ You can _optionally_ provide callback listeners. These will be called when the u
 </PageDescription>
 
 
-<AnchorLinks >
+<AnchorLinks>
   <AnchorLink>contextMenuHandler</AnchorLink>
   <AnchorLink>editActionHandler</AnchorLink>
   <AnchorLink>beforeEditActionHandler</AnchorLink>
@@ -21,7 +22,7 @@ You can _optionally_ provide callback listeners. These will be called when the u
   <AnchorLink>idGeneratorHandler</AnchorLink>
   <AnchorLink>selectionChangeHandler</AnchorLink>
   <AnchorLink>layoutHandler</AnchorLink>
-  </AnchorLinks>
+</AnchorLinks>
 
 
 
@@ -118,7 +119,7 @@ Existing internal actions are:
 
 External actions are custom actions you want common canvas to display for your application. To get common canvas to display your action you would need to return an array from the callback that includes a menu item for the action.
 
-When the user clicks the option in the context menu matching your action common canvas will call the <a href="#editactionhandler">editActionHandler</a> callback so you'll need to implement some code in that callback to execute the intended action. If you want to simply add your action to the default context menu provided by common canvas you can take the defaultMenu parameter provided to the callback and add your menu item to it. Alternatively, you can provide a complete new context menu of your own.
+When the user clicks the option in the context menu matching your action common canvas will call the <AnchorLink>editActionHandler</AnchorLink> callback so you'll need to implement some code in that callback to execute the intended action. If you want to simply add your action to the default context menu provided by common canvas you can take the defaultMenu parameter provided to the callback and add your menu item to it. Alternatively, you can provide a complete new context menu of your own.
 
 Here is a sample implementation of contextMenuHandler, which takes a source object (described above) and the defaultMenu as parameters, and adds a custom action to the default menu when the user 'right clicks' the canvas background.
 
@@ -169,7 +170,7 @@ This callback is optional. You don't need to implement anything for it and it do
 
 * Clicks a tool in the toolbar.
 * Clicks an option in the context menu.
-* Presses a <a href="/common-canvas/canvas-documentation#keyboard-support">key combination</a> on the keyboard to cause the canvas to change.
+* Presses a <Link to="/common-canvas/canvas-documentation#keyboard-support">key combination</Link> on the keyboard to cause the canvas to change.
 * Performs some direct manipulation on the canvas such as:
   *  Creates a node (createNode)
   *  Moves one or a set of nodes/comments (moveObjects)
@@ -851,4 +852,4 @@ The ID of the Pipeline for the newly selected objects
 
 This is an optional handler you don't need to implement anything for it unless you want to. The layoutHandler callback, when provided, is called for each node on the canvas. The callback should return a Javascript object whose properties will override the default properties for node layout. The callback is provided with a parameter data which is the node object. Your code can look at the node properties and decide which properties it needs to override. This can be used to change the node shape, styling and position and size of node elements like the image, main label etc.
 
-For more details see: <a href="/common-canvas/customizing-node-layout">Customizing Node Layout Properties</a>.
+For more details see: <Link to="/common-canvas/customizing-node-layout">Customizing Node Layout Properties</Link>.

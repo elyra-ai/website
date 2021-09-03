@@ -3,6 +3,7 @@ title: Customizing node layout
 description: Customizing node layout
 ---
 
+import { Link } from 'gatsby';
 
 <PageDescription>
 
@@ -277,7 +278,7 @@ The values for `bodyPath` and `selectionPath` must be <a href="https://developer
 
 ## Default properties override
 
-There are a couple of ways to do this depending on your needs. First, if you just want to change the look of all nodes on your canvas you can specify the `enableNodeLayout` configuration parameter in the <a href="config/canvas-config#canvas-config-object">main canvas configuration object</a>. The properties from this object will replace any properties in the default set, which was chosen based on the settings of `enableNodeFormatType`. So you don't need to provide all of the properties; just the ones you want to replace.
+There are a couple of ways to do this depending on your needs. First, if you just want to change the look of all nodes on your canvas you can specify the `enableNodeLayout` configuration parameter in the <Link to="/common-canvas/config/canvas-config#canvas-config-object">main canvas configuration object</Link>. The properties from this object will replace any properties in the default set, which was chosen based on the settings of `enableNodeFormatType`. So you don't need to provide all of the properties; just the ones you want to replace.
 
 Let's say you want to go crazy and have your nodes be displayed as ellipses. You could provide the following settings in `enableNodeLayout`:
 
@@ -317,7 +318,7 @@ If you experiment, you will see the nodes can be selected, moved and manipulated
 
 ## Customizing individual nodes
 
-If you want each node to have a different layout based on some criteria you can use the second method for overriding the node layout properties. This employs the <a href="callbacks#layouthandler">layoutHandler callback method</a>. When you specify this callback method to common canvas your layout handler method will be called for each node on the canvas, during initialization and occasionally at other times.
+If you want each node to have a different layout based on some criteria you can use the second method for overriding the node layout properties. This employs the <Link to="/common-canvas/callbacks#layouthandler">layoutHandler callback method</Link>. When you specify this callback method to common canvas your layout handler method will be called for each node on the canvas, during initialization and occasionally at other times.
 
 The method should return a simple Javascript object that contains any node layout properties you want to override from the defaults and the ones specified in `enableNodeLayout` config field. This is an important point: there are three levels of properties provided where each overrides the previous set:
 
@@ -355,7 +356,7 @@ layoutHandler(data) {
 
 OK, it's not a very complicated example but hopefully you get the message :)
 
-You can see an example application that use the <a href="callbacks#layouthandler">layoutHandler callback method</a>. In the test harness:
+You can see an example application that use the <Link to="/common-canvas/callbacks#layouthandler">layoutHandler callback method</Link>. In the test harness:
 
 1. Open the Common Canvas side panel (click the hamburger icon)
 2. Select the `Explain` sample application

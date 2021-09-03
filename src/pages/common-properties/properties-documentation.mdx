@@ -3,9 +3,11 @@ title: Properties documentation
 description: Properties documentation
 ---
 
+import { Link } from 'gatsby';
+
 <PageDescription>
 
-The Elyra test harness (http://ibm.biz/elyra-canvas) allows consumers to explore a number of configurations of both the canvas as well as properties. All current documentation of Common properties components may be found <a href="https://wdp-common-canvas-dev.stage1.mybluemix.net/#/properties" target="_blank">here</a>. 
+The Elyra test harness (http://ibm.biz/elyra-canvas) allows consumers to explore a number of configurations of both the canvas as well as properties. All current documentation of Common properties components may be found <Link to="https://wdp-common-canvas-dev.stage1.mybluemix.net/#/properties" target="_blank">here</Link>. 
 
 </PageDescription>
 
@@ -26,7 +28,6 @@ The examples below show off consumers who have adopted the Elyra canvas technolo
 <AnchorLinks >
   <AnchorLink>Introductions</AnchorLink>
   <AnchorLink>Callbacks</AnchorLink>
-
 </AnchorLinks>
 
 
@@ -75,7 +76,7 @@ propertiesInfo: {
 
 * parameterDef schema and examples: https://github.com/elyra-ai/pipeline-schemas/tree/master/common-canvas/parameter-defs
 
-* Common Properties Parameter Definition: <br /> found <a href="parameter-definition">here</a>. 
+* Common Properties Parameter Definition: <br /> found <Link to="/common-properties/parameter-definition">here</Link>. 
 
 * `expressionInfo` schema and examples: https://github.com/elyra-ai/pipeline-schemas/tree/master
 
@@ -133,6 +134,7 @@ var messages = i18nData.messages;
   * containerType `string`: type of container to display the properties, can be "Modal" or "Custom". default: "`Custom`"
   * rightFlyout `boolean`: if custom container is a right-flyout, set to true. default: `false`
   * applyOnBlur `boolean`: calls applyPropertyChanges when focus leave common-properties. default: `false`
+  * disableSaveOnRequiredErrors `boolean`: Disable the properties editor "save" button if there are required errors
   * enableResize `boolean`: adds a button that allows the right-side fly-out editor to expand/collapse between small and medium sizes. default: `true`
   * conditionReturnValueHandling `string`: used to determine how hidden or disabled control values are returned in applyPropertyChanges callback. Current options are "value" or "null". default: "`value`"
     * buttonLabels `object`:
@@ -151,7 +153,7 @@ var messages = i18nData.messages;
   * propertyListener // optional
   * actionHandler // optional
   * buttonHandler // optional
-* View <a href="custom-components#custom-panels">Common Properties Custom Components</a> for the following:
+* View <Link to="/common-properties/custom-components#custom-panels">Common Properties Custom Components</Link> for the following:
   * customPanels `array`: array of custom panels.
   * customControls `array`: array of custom controls.
   * customConditionOps `array`: array of custom condition operators. 
@@ -173,7 +175,7 @@ applyPropertiesEditing(closeEditor)
 
 ### Using CommonProperties in CommonCanvas right-flyout panel
 
-<a href="/common-canvas/canvas-documentation#step-3-:-set-the-model-and-palette-data">Common Canvas</a> has a right-flyout panel that can render a React object. It can be used to render Common Properties in a flyout panel.
+<Link to="/common-canvas/canvas-documentation#step-3-:-set-the-model-and-palette-data">Common Canvas</Link> has a right-flyout panel that can render a React object. It can be used to render Common Properties in a flyout panel.
 
 Create a CommonProperties object with containerType set to "Custom" and rightFlyout set to true.
 
