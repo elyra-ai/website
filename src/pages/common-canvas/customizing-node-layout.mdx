@@ -31,7 +31,7 @@ There are two possible sets of node layout properties provided by common-canvas.
 
 ## Default values
 
-The possible node layout properties (that are currently supported) are shown below with the values they have when `enableNodeFormatType = "Horizontal"`. You can see the values for the other two sets of properties by looking at the <a href="https://github.com/elyra-ai/canvas/blob/master/canvas_modules/common-canvas/src/object-model/layout-dimensions.js">layout-dimensions.js program</a>. 
+The possible node layout properties (that are currently supported) are shown below with the values they have when `enableNodeFormatType = "Horizontal"`. You can see the values for the other two sets of properties by looking at the <a href="https://github.com/elyra-ai/canvas/blob/main/canvas_modules/common-canvas/src/object-model/layout-dimensions.js">layout-dimensions.js program</a>.
 
 ```
 // Default node sizes. The height might be overridden for nodes with more ports
@@ -361,7 +361,7 @@ You can see an example application that use the <Link to="/common-canvas/callbac
 1. Open the Common Canvas side panel (click the hamburger icon)
 2. Select the `Explain` sample application
 
-You will see the nodes have different shapes and colors based on their type. You can examine the <a href="https://github.com/elyra-ai/canvas/blob/master/canvas_modules/harness/src/client/components/custom-canvases/explain/explain-canvas.jsx">Explain sample app code</a> to see how it works. This involves these three parts:
+You will see the nodes have different shapes and colors based on their type. You can examine the <a href="https://github.com/elyra-ai/canvas/blob/main/canvas_modules/harness/src/client/components/custom-canvases/explain/explain-canvas.jsx">Explain sample app code</a> to see how it works. This involves these three parts:
 
 1. <a href="https://github.com/elyra-ai/canvas/blob/3e2a1be61047b6ea85fe13020a00ec5dc8a41405/canvas_modules/harness/src/client/components/custom-canvases/explain/explain-canvas.jsx#L15">This line</a> sets the `enableConnectionType` which will set all nodeLayout properties to their defaults.
 2. <a href="https://github.com/elyra-ai/canvas/blob/3e2a1be61047b6ea85fe13020a00ec5dc8a41405/canvas_modules/harness/src/client/components/custom-canvases/explain/explain-canvas.jsx#L17">This line</a> will override the node layout defaults with ones specified for all nodes.
