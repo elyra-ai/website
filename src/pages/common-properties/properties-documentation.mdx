@@ -74,11 +74,11 @@ propertiesInfo: {
 }
 ```
 
-* parameterDef schema and examples: https://github.com/elyra-ai/pipeline-schemas/tree/master/common-canvas/parameter-defs
+* parameterDef schema and examples: https://github.com/elyra-ai/pipeline-schemas/tree/main/common-canvas/parameter-defs
 
 * Common Properties Parameter Definition: <br /> found <Link to="/common-properties/parameter-definition">here</Link>. 
 
-* `expressionInfo` schema and examples: https://github.com/elyra-ai/pipeline-schemas/tree/master
+* `expressionInfo` schema and examples: https://github.com/elyra-ai/pipeline-schemas/tree/main
 
 or...
 
@@ -95,11 +95,11 @@ propertiesInfo: {
 }
 ```
 
-* `formData` schema: https://github.com/elyra-ai/pipeline-schemas/tree/master/common-canvas/form
+* `formData` schema: https://github.com/elyra-ai/pipeline-schemas/tree/main/common-canvas/form
 
 * form information wiki: https://github.com/elyra-ai/wml-canvas-service/wiki/2.-Runtimes-And-Operators
 
-* The optional messages attribute can be used to set validation messages associated with a node. The format of the message objects is defined in Pipelin Flow UI schema: https://github.com/elyra-ai/pipeline-schemas/blob/master/common-pipeline/pipeline-flow/pipeline-flow-ui-v1-schema.json
+* The optional messages attribute can be used to set validation messages associated with a node. The format of the message objects is defined in Pipelin Flow UI schema: https://github.com/elyra-ai/pipeline-schemas/blob/main/common-pipeline/pipeline-flow/pipeline-flow-ui-v1-schema.json
 
 ### Step 3 : Display the properties editor
 
@@ -326,7 +326,7 @@ helpClickHandler(nodeTypeId, helpData, appData) {
 
 To control whether a node shows the help icon in the right fly-out, a help object with optional helpData needs to be provided in the paramDef or formData:
 
-*    paramDef: Provide help object in operator's uihints. If help object exists, the icon will be shown. Optionally, provide a helpData object within the help object, which will be passed in the helpClickHandler callback.     https://github.com/elyra-ai/pipeline-schemas/blob/master/common-pipeline/operators/uihints-v2-schema.json#L64
-*    formData: add help object to form definition. The https://github.com/elyra-ai/pipeline-schemas/blob/master/common-canvas/form/form-v2-schema.json#L51
+*    paramDef: Provide help object in operator's uihints. If help object exists, the icon will be shown. Optionally, provide a helpData object within the help object, which will be passed in the helpClickHandler callback.     https://github.com/elyra-ai/pipeline-schemas/blob/main/common-pipeline/operators/uihints-v2-schema.json#L64
+*    formData: add help object to form definition. The https://github.com/elyra-ai/pipeline-schemas/blob/main/common-canvas/form/form-v2-schema.json#L51
 
 If no help object is found, no help link will be shown.

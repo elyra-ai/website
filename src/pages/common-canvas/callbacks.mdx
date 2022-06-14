@@ -339,7 +339,7 @@ This callback is called before tips are shown for: palette items; nodes in the c
 * For ports, the port label is shown.
 * For links, no tip is shown by default.
 
-To overwrite the content, you can return either a string or a React element. If your code returns null for a particular type of tip, common-canvas will display the default tip for that object. For an example of an implementation for a tipHandler, see App.js in the test harness code (https://github.com/elyra-ai/canvas/blob/master/canvas_modules/harness/src/client/App.js).
+To overwrite the content, you can return either a string or a React element. If your code returns null for a particular type of tip, common-canvas will display the default tip for that object. For an example of an implementation for a tipHandler, see App.js in the test harness code (https://github.com/elyra-ai/canvas/blob/main/canvas_modules/harness/src/client/App.js).
 
 Before a tip is shown, common-canvas calls the tipHandler with the type of the tip and the data specific to the element.
 
