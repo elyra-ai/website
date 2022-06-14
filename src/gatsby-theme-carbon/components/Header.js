@@ -53,7 +53,6 @@ const NavMenu = () => {
 </>);
 }
 
-// START COPY FROM https://github.com/carbon-design-system/gatsby-theme-carbon/blob/master/packages/gatsby-theme-carbon/src/components/Header/Header.js#L27
 const Header = () => {
   const {
     leftNavIsOpen,

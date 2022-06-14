@@ -122,7 +122,7 @@ A text string is displayed at the specified decoration location. Do not set imag
 #### label_editable
 A boolean that defaults to `false`. When set to `true`, if the mouse pointer is hovered over the label an edit icon is displayed next to the label which, when clicked, opens the label for editing. The label can also for double clicked to go to edit mode. 
 
-When editing is completed (by clicking outside the text area) an `editDecorationLabel` action is executed which results in calls to first the [`beforeEditActionHandler`](https://github.ibm.com/NGP-TWC/elyra-canvas-microsite/blob/master/src/pages/common-canvas/callbacks.mdx#beforeEditActionHandler) and then the [`editActionHandler`](https://github.ibm.com/NGP-TWC/elyra-canvas-microsite/blob/master/src/pages/common-canvas/callbacks.mdx#editActionHandler) callbacks.
+When editing is completed (by clicking outside the text area) an `editDecorationLabel` action is executed which results in calls to first the `beforeEditActionHandler` and then the `editActionHandler` callbacks.
 
 #### label_align
 A string set to either "center" or "left". When set to "center" the label will be centered on the point defined by the `position`, `distance`, `x_pos` and `y_pos` properties. Text that stretches on to a second (or more) line(s) will also be centered. 
